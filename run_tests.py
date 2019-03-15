@@ -11,6 +11,8 @@ files = glob.glob(DIR)
 
 glob_fail = False
 for file in files:
+    if sys.platform == "win32" and file.split(".")[-1] != "exe":
+         continue
     if not os.path.isdir(file) and "test" in file:  # skip directories and unwanted files such as core dumps
         output = subprocess.run([file], stdout=subprocess.PIPE, universal_newlines=True)
         test_failed = False

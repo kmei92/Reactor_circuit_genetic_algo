@@ -22,7 +22,7 @@ Run the tool like
 python plot.py output 0 1 2
 ```
 
-This will create a file `output.py` visualising the circuit (in this case the 1 unit circuit).
+This will create a file `output.pdf` visualising the circuit (in this case the 1 unit circuit).
 For a more complicated circuit (from the problem specification)
 
 ```

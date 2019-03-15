@@ -10,8 +10,10 @@ int answer_vector[2*num_units+1] = {0, 1, 2, 3, 4, 4, 5, 6, 7, 7, 8, 8, 9,
 
 double Evaluate_Circuit(int *circuit_vector, double tolerance, int max_iterations) {
 
+  int vector_size = 2*num_units+1;
+
   double Performance = 0.0; 
-  for (int i=0;i<num_units;i++) {
+  for (int i=0;i<vector_size;i++) {
     //answer_vector is a predetermined answer vector (same size as circuit_vector)
     Performance += (20-std::abs(circuit_vector[i]-answer_vector[i]))*100.0; 
   }

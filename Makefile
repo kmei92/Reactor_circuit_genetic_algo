@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -Wall
-LDFLAGS=
+LDFLAGS =
 SOURCE_DIR = src
 INCLUDE_DIR = includes
 TEST_DIR = tests
@@ -28,29 +28,30 @@ clean:
 
 .PHONY: Genetic_Algorithm all clean
 
+TESTS = test1 test2
 
-runtests: test1 test2
+runtests: ${TESTS}
 	@python3 run_tests.py
 
-tests: test1 test2
+tests: ${TESTS}
 
 test1: $(TEST_BIN_DIR)/test1
 
 test2: $(TEST_BIN_DIR)/test2
 
 $(TEST_BIN_DIR)/test1: $(TEST_BUILD_DIR)/test1.o $(BUILD_DIR)/CCircuit.o
-	$(CXX) -o $@ $^
+	$(CXX) -o $@ $^ $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS)
 
 $(TEST_BIN_DIR)/test2: $(TEST_BUILD_DIR)/test2.o $(BUILD_DIR)/Genetic_Algorithm.o
-	$(CXX) -o $@ $^
+	$(CXX) -o $@ $^ $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS)
 
 $(TEST_BUILD_DIR)/%.o: $(TEST_DIR)/%.cpp $(INCLUDE_DIR)/*.h | test_directories
-	$(CXX) -o $@ -c $< $(CFLAGS) -I$(INCLUDE_DIR)
+	$(CXX) -o $@ -c $< $(CXXFLAGS) $(CPPFLAGS) -I$(INCLUDE_DIR)
 
 cleantest:
 	rm -f $(TEST_BUILD_DIR)/* $(TEST_BIN_DIR)/*
 
-.PHONY: tests test1 test2 cleantests runtests
+.PHONY: tests ${TESTS} cleantests runtests
 
 
 directories:
