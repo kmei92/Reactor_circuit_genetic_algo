@@ -8,6 +8,9 @@
 #include <fstream>
 #include <ctime>
 #include <vector>
+#include "CCircuit.h"
+#include "CUnit.h"
+#include "CCircuit.cpp"
 
 
 using namespace std;
@@ -15,7 +18,6 @@ using namespace std;
 int **all_parents;
 int **new_all_parents;
 int num_parents = 10;
-int num_units = 10;
 int length = num_units * 2 + 1;
 double gene_change_rate = 0.01;
 double mutation_rate = 0.9;
@@ -124,7 +126,6 @@ double UpdateFunction(int *vec, int size){
 }
 
 
-
 int main(int argc, char *argv[]) {
 
     // Initialize the parent vector
@@ -136,21 +137,42 @@ int main(int argc, char *argv[]) {
     performance_list = new double[num_parents];
     performance_index = new int[num_parents];
 
+    int ttest[21] = {0,1,2,3,4,5,6,7,8,9,10,10,11,10,11,10,11,10,11,10,11};
+
+    cout << "check value: "<< Check_Validity(ttest)<<  endl;
+
+    bool flag_right = true;
     // Initialize values for parents
     for (int i = 0; i < num_parents; i++) {
-        all_parents[i] = new int[2 * num_units + 1];
-        new_all_parents[i] = new int[2 * num_units + 1];
+        if (flag_right) {
+            all_parents[i] = new int[2 * num_units + 1];
+            new_all_parents[i] = new int[2 * num_units + 1];
+        }
+        all_parents[i][0] = rand() % num_units;
+
         for (int j = 1; j < 2 * num_units + 1; j += 2) {
             int index = j / 2;
             int top = rand() % (num_units + 2);
             int bot = rand() % (num_units + 2);
-            while (top == index && bot == index && top == bot) {
+            while (top == index || bot == index || top == bot) {
                 top = rand() % (num_units + 2);
                 bot = rand() % (num_units + 2);
             }
             all_parents[i][j] = top;
             all_parents[i][j + 1] = bot;
+
+            //cout << all_parents[i][j]  << " "<< all_parents[i][j + 1]<< " ";
         }
+
+        if(!Check_Validity(all_parents[i])){
+            i--;
+            flag_right = false;
+            cout << "i "<< i << endl;
+        }else{
+            cout << "valid!!! " <<endl;
+            flag_right = true;
+        }
+
     }
 
     for (int i = 0; i < num_parents; i++) {
@@ -163,7 +185,7 @@ int main(int argc, char *argv[]) {
     }
 
     double exp_performance = 25.0; // expected performance
-    int max_steps = 100;          // max iteration steps
+    int max_steps = 1000;          // max iteration steps
     double best_performance = 10.0 ;      // best performance in one generation
     int best_index;               // the index of the best performance one
     double worst_performance;
@@ -256,7 +278,11 @@ int main(int argc, char *argv[]) {
             // if true count ++
             // if false continue without count ++
             //-----------------------
-            count++;
+            if (Check_Validity(new_all_parents[count])){
+                count++;
+            }
+
+
         }
 
         swapping_parent();
