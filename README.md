@@ -1,24 +1,39 @@
 # acse-4-project-3-platinum
 acse-4-project-3-platinum created by GitHub Classroom
 
-Minutes for Monday Meeting
+#Minutes for Monday Meeting
+
+
 •	Yusuf: volunteered as project manager to take care of the following
 	Daily schedules and to do list
 	Manage github page
 	Documentations
+
+
 •	Group members divided into two groups 
 	Group Genetic Algorithm: Sanaz, keer and Mong
 	Group Circuit Simulation: Yusuf, Sean and Michael
+
+
 •	Parallelisation to be done, with OpenMP, after serial code has been written.
+
+
 •	Daily schedule:
 	9am resumption
 	12:30pm – 2pm lunch
 	6pm closing
 
-Minutes Tuesday Meeting
+
+
+#Minutes Tuesday Meeting
+
+
 •	Genetic Algorithm code: Done
+
 •	Circuit simulation code: Ongoing
+
 •	Validity checking function: Ongoing
+
 
 Tasks to be done and timeline
 •	Circuit simulation code: Tuesday 
