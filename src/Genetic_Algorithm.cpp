@@ -7,19 +7,17 @@
 #include "../includes/CUnit.h"
 #include "../includes/Genetic_Algorithm.h"
 
-#include <iostream>
-#include <math.h>
-
 
 double relative_change(double a, double b, double c, double d)
 {
+	//calculates the relative change of (a+b) to (c+d)
 	double fin = b + a;
 	double start = d + c;
 	double change = abs(fin - start) / abs(start);
 	return change;
 }
 
-int Evaluate_Circuit(int *circuit_vector, double tolerance, int max_iterations, int num_units, double conc, double waste, double profit, double cost)
+double Evaluate_Circuit(int *circuit_vector, double tolerance, int max_iterations, int num_units, double conc, double waste, double profit, double cost)
 {
 	CUnit *circuit = new CUnit[num_units + 2];
 
@@ -27,10 +25,15 @@ int Evaluate_Circuit(int *circuit_vector, double tolerance, int max_iterations, 
 	int cnt = 0;
 	for (int i = 1; i < 2 * num_units + 1; i += 2)
 	{
+		//index to outflow
 		circuit[cnt].conc_num = circuit_vector[i];
 		circuit[cnt].tails_num = circuit_vector[i + 1];
+
+		//counts feeds of outflow unit
 		circuit[circuit[cnt].conc_num].conc_count++;
 		circuit[circuit[cnt].tails_num].tail_count++;
+
+		//add unit 'cnt' to vector of feeds of outflow unit
 		circuit[circuit[cnt].conc_num].conc_inlets.push_back(cnt);
 		circuit[circuit[cnt].tails_num].tails_inlets.push_back(cnt);
 		cnt++;
@@ -55,11 +58,11 @@ int Evaluate_Circuit(int *circuit_vector, double tolerance, int max_iterations, 
 	}
 
 	int it = 0;
-	bool has_converged = false;
 
 	int check_cnt = 0;
 	do
 	{
+		//counts number of converged units
 		check_cnt = 0;
 		circuit[num_units].wipe_feed();
 		circuit[num_units + 1].wipe_feed();
@@ -89,7 +92,6 @@ int Evaluate_Circuit(int *circuit_vector, double tolerance, int max_iterations, 
 		for (int i = 0; i < num_units; i++)
 		{
 			double change = relative_change(circuit[i].feed[0], circuit[i].feed[1], circuit[i].old_feed[0], circuit[i].old_feed[1]);
-			std::cout << change << endl;
 			if (change < tolerance)
 				check_cnt++;
 		}
@@ -109,7 +111,9 @@ int Evaluate_Circuit(int *circuit_vector, double tolerance, int max_iterations, 
 	//calculating the performance
 	double absolute_worst = waste * (- cost);
 	double revenue = circuit[num_units].feed[0] * profit - circuit[num_units].feed[1] * cost;
-	int performance = (int)((revenue - absolute_worst)/profit);
+	std::cout << "revenue: " << revenue << std::endl;
+	double performance = (int)((revenue - absolute_worst)/profit);
+
 
 	delete[] circuit;
 	return performance;
