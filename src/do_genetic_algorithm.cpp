@@ -106,12 +106,10 @@ double UpdateFunction(int *vec, int size){
         sum += vec[i];
     }
     avg = sum / size;
-    cout << "avg " << avg << " ";
     for (int i = 0; i < size; i++){
         std += pow(abs(vec[i] - avg), 2.0);
     }
     std = pow(std, 0.5);
-    cout << "std " << std << " ";
     return std;
 }
 
@@ -131,6 +129,7 @@ int main(int argc, char *argv[]) {
     // Initialize values for parents
     for (int i = 0; i < num_parents; i++) {
         all_parents[i] = new int[2 * num_units + 1];
+        new_all_parents[i] = new int[2 * num_units + 1];
         for (int j = 1; j < 2 * num_units + 1; j += 2) {
             int index = j / 2;
             int top = rand() % (num_units + 2);
@@ -153,7 +152,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    double exp_performance = 1.0; // expected performance
+    double exp_performance = 30.0; // expected performance
     int max_steps = 100;          // max iteration steps
     double best_performance = 10.0 ;      // best performance in one generation
     int best_index;               // the index of the best performance one
@@ -162,50 +161,21 @@ int main(int argc, char *argv[]) {
     int steps = 0;
 
     // Out loop
-    while(best_performance > exp_performance && steps < max_steps) {
+    while(best_performance < exp_performance && steps < max_steps) {
 
         //---------------------------
         // run the circuit simulator
         // Update function
         //---------------------------
-        int test[num_parents];
         for (int i = 0; i < num_parents; i++){
             performance_list[i] = UpdateFunction(all_parents[i], length);
             performance_index[i] = i;
-            test[i] = i + 1;
         }
 
-        /*
-        for (int i = 0; i < num_parents; i++){
-            performance_list[i] = -5 + rand() % 10;
-
-            cout << performance_list[i] << " ";
-        }
-         */
-        //----------------------------------
-        // Check values
-
-        /*
-        cout << "Raw Values" << endl;
-        cout << "Values: " << " ";
-        for (int i = 0; i < num_parents; i++){
-            cout << performance_list[i] << " ";
-        }
-        cout << endl;
-        cout << "Index: " << " ";
-        for (int i = 0; i < num_parents; i++) {
-            cout << performance_index[i] << " ";
-        }
-        cout << endl;
-         */
-        //----------------------------------
         // Evaluate the performance
-        // sort the performance list
         // find the max and min value
         int max_index, min_index;
-        cout << "hello "<< endl;
         find_max_min(performance_list, max_index, min_index);
-        cout << "hi "<< endl;
         //sort_track_index(test, performance_list);
         //sort(performance_list, performance_list + num_parents);
 
@@ -246,7 +216,6 @@ int main(int argc, char *argv[]) {
         for (int i = 0 ; i < num_parents; i++) {
             sum += performance_list[i];
             distribution[i+1] = sum;
-            cout << "" << worst_performance << endl;
         }
 
         // push the best one to next generation
@@ -293,12 +262,15 @@ int main(int argc, char *argv[]) {
 
         swapping_parent();
         steps++;
+        cout << "step " << steps<< endl;
     }
 
     for (int i = 0; i < num_parents; i++) {
         delete[] all_parents[i];
+        delete[] new_all_parents[i];
     }
     delete[] all_parents;
+    delete[] new_all_parents;
     delete [] distribution;
     delete [] performance_list;
     delete [] performance_index;
