@@ -17,7 +17,8 @@ int **new_all_parents;
 int num_parents = 10;
 int num_units = 10;
 int length = num_units * 2 + 1;
-double rate = 0.02;
+double gene_change_rate = 0.01;
+double mutation_rate = 0.9;
 
 double *performance_list;
 int *performance_index;
@@ -75,11 +76,20 @@ void select_parent(int &tgt_parent_index_1, int &tgt_parent_index_2){
 }
 
 
+// whether to mutation
+bool RollingDice(){
+    int i = 1 + rand() % 100;
+    if (i < mutation_rate * 100)
+        return true;
+    else
+        return false;
+}
+
 void mutation(int count, int i){
     int needle;
     needle = 1 + rand() % 100;
-    if (needle > 100 - 100 * rate) {
-        if (i ==0 ){
+    if (needle > 100 - 100 * gene_change_rate) {
+        if (i == 0 ){
             new_all_parents[count][i] = rand() % num_units;
         }else {
             new_all_parents[count][i] = rand() % (num_units + 2);
@@ -152,7 +162,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    double exp_performance = 30.0; // expected performance
+    double exp_performance = 25.0; // expected performance
     int max_steps = 100;          // max iteration steps
     double best_performance = 10.0 ;      // best performance in one generation
     int best_index;               // the index of the best performance one
@@ -242,12 +252,17 @@ int main(int argc, char *argv[]) {
             for (int i = 0; i < length;i++) {
                 if (i < pt) {
                     new_all_parents[count][i] = pair[0][i];
-                    // Do mutation
-                    mutation(count, i);
+                    // Decide whether put to mutation
+                    if(RollingDice()) {
+                        // Do mutation
+                        mutation(count, i);
+                    }
                 }else{
                     new_all_parents[count][i] = pair[1][i];
-                    // Do mutation
-                    mutation(count, i);
+                    if(RollingDice()) {
+                        // Do mutation
+                        mutation(count, i);
+                    }
                 }
             }
 
@@ -274,7 +289,6 @@ int main(int argc, char *argv[]) {
     delete [] distribution;
     delete [] performance_list;
     delete [] performance_index;
-
 }
 
 
