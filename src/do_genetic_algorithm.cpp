@@ -189,22 +189,6 @@ int main(int argc, char *argv[]) {
         //sort_track_index(test, performance_list);
         //sort(performance_list, performance_list + num_parents);
 
-        //----------------------------------
-        /*
-        cout << "After sorting" << endl;
-        cout << "Values: " << " ";
-        for (int i = 0; i < num_parents; i++){
-            cout << performance_list[i] << " ";
-        }
-        cout << endl;
-        cout << "Index: " << " ";
-        for (int i = 0; i < num_parents; i++) {
-
-            cout << test[i] << " ";
-        }
-         */
-        //----------------------------------
-
         // Choose the best one and the worst one
         best_performance = performance_list[max_index];
         cout << "best performance: " << best_performance << endl;

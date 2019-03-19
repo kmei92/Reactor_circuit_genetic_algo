@@ -1,3 +1,4 @@
+#pragma once
 class CUnit {
  public:
   //index of the unit to which this unit’s concentrate stream is connected 
@@ -13,4 +14,5 @@ class CUnit {
 
   */
 };
+
 
