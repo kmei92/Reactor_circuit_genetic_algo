@@ -8,8 +8,11 @@
 #include <fstream>
 #include <ctime>
 #include <vector>
+#include "Genetic_Algorithm.h"
+#include "Genetic_Algorithm.cpp"
 #include "CCircuit.h"
 #include "CUnit.h"
+#include "CUnit.cpp"
 #include "CCircuit.cpp"
 
 
@@ -17,7 +20,7 @@ using namespace std;
 
 int **all_parents;
 int **new_all_parents;
-int num_parents = 10;
+int num_parents = 50;
 int length = num_units * 2 + 1;
 double gene_change_rate = 0.01;
 double mutation_rate = 0.9;
@@ -128,6 +131,8 @@ double UpdateFunction(int *vec, int size){
 
 int main(int argc, char *argv[]) {
 
+
+    srand(time(NULL));
     // Initialize the parent vector
     all_parents = new int*[num_parents];
     new_all_parents = new int*[num_parents];
@@ -160,10 +165,10 @@ int main(int argc, char *argv[]) {
             }
             all_parents[i][j] = top;
             all_parents[i][j + 1] = bot;
-
             //cout << all_parents[i][j]  << " "<< all_parents[i][j + 1]<< " ";
         }
 
+        // Check if the randomly generated vector is valid
         if(!Check_Validity(all_parents[i])){
             i--;
             flag_right = false;
@@ -184,8 +189,8 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    double exp_performance = 25.0; // expected performance
-    int max_steps = 1000;          // max iteration steps
+    double exp_performance = 10000.0; // expected performance
+    int max_steps = 10;          // max iteration steps
     double best_performance = 10.0 ;      // best performance in one generation
     int best_index;               // the index of the best performance one
     double worst_performance;
@@ -200,8 +205,9 @@ int main(int argc, char *argv[]) {
         // Update function
         //---------------------------
         for (int i = 0; i < num_parents; i++){
-            performance_list[i] = UpdateFunction(all_parents[i], length);
-            performance_index[i] = i;
+            //performance_list[i] = UpdateFunction(all_parents[i], length);
+            performance_list[i] = Evaluate_Circuit(all_parents[i], 0.00001, 30, num_units, 10, 100, 100.0, 500.0);
+            //cout << "i  " << i << endl;
         }
 
         // Evaluate the performance

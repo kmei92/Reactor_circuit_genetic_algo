@@ -1,5 +1,4 @@
 #include <iostream>
-
 #include "CUnit.h"
 #include "CCircuit.h"
 #include "CCircuit.cpp"
