@@ -3,6 +3,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <algorithm>
+#include <fstream>
 #include <sstream>
 #include <iostream>
 #include <fstream>
@@ -102,7 +103,7 @@ void mutation(int count, int i){
     }
 }
 
-
+// swap the the old and new parents
 void swapping_parent(){
     for (int i = 0; i < num_parents; i++){
         for (int j = 0; j < length; j++){
@@ -190,8 +191,8 @@ int main(int argc, char *argv[]) {
     }
 
     double exp_performance = 10000.0; // expected performance
-    int max_steps = 10;          // max iteration steps
-    double best_performance = 10.0 ;      // best performance in one generation
+    int max_steps = 1000;          // max iteration steps
+    double best_performance = 10.0;      // best performance in one generation
     int best_index;               // the index of the best performance one
     double worst_performance;
     double tol = 0.1;             // a small value to make sure even the worst one has the right to reproduce
@@ -209,6 +210,11 @@ int main(int argc, char *argv[]) {
             performance_list[i] = Evaluate_Circuit(all_parents[i], 0.00001, 30, num_units, 10, 100, 100.0, 500.0);
             //cout << "i  " << i << endl;
         }
+        cout << "Performance: ";
+        for (int i =0 ;i < num_parents; i++){
+            cout << performance_list[i] << " ";
+        }
+        cout << endl;
 
         // Evaluate the performance
         // find the max and min value
@@ -290,11 +296,18 @@ int main(int argc, char *argv[]) {
 
 
         }
-
         swapping_parent();
         steps++;
         cout << "step " << steps<< endl;
+
     }
+
+    cout << "final vector: " << endl;
+    for (int i = 0; i < length; i++){
+        cout << all_parents[best_index][i] << " ";
+
+    }
+    cout << endl;
 
     for (int i = 0; i < num_parents; i++) {
         delete[] all_parents[i];
