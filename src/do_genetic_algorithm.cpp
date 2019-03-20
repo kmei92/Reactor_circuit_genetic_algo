@@ -39,6 +39,8 @@ void find_max_min(double *performance_list, int &max_index, int &min_index){
 
     double min_value = performance_list[0];
     double max_value = performance_list[0];
+    max_index = 0;
+    min_index = 0;
 
     for (int i = 1; i < num_parents; i++){
         if (performance_list[i] > max_value){
@@ -198,6 +200,12 @@ int main(int argc, char *argv[]) {
     double tol = 0.1;             // a small value to make sure even the worst one has the right to reproduce
     int steps = 0;
 
+
+
+    ofstream performance_output;
+    performance_output.open("../performance_list.txt");
+
+
     // Out loop
     while(best_performance < exp_performance && steps < max_steps) {
 
@@ -225,6 +233,11 @@ int main(int argc, char *argv[]) {
 
         // Choose the best one and the worst one
         best_performance = performance_list[max_index];
+
+        //----------------------------
+        performance_output << best_performance << endl;
+        //----------------------------
+
         cout << "best performance: " << best_performance << endl;
         best_index = max_index;
         worst_performance = performance_list[min_index];
@@ -302,12 +315,19 @@ int main(int argc, char *argv[]) {
 
     }
 
+    cout << endl;
+    performance_output.close();
+
+    ofstream final_vec;
+    final_vec.open("../data.txt");
+
     cout << "final vector: " << endl;
     for (int i = 0; i < length; i++){
         cout << all_parents[best_index][i] << " ";
-
+        final_vec << all_parents[best_index][i] << " ";
     }
     cout << endl;
+    final_vec.close();
 
     for (int i = 0; i < num_parents; i++) {
         delete[] all_parents[i];

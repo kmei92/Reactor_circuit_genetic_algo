@@ -117,5 +117,6 @@ double Evaluate_Circuit(int *circuit_vector, double tolerance, int max_iteration
 
 
   delete[] circuit;
-  return performance;
+  //return performance;
+  return revenue;
 }
