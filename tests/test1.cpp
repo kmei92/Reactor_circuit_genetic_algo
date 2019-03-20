@@ -3,7 +3,7 @@
 #include "CCircuit.h"
 //#include "CCircuit.cpp"
 
-
+#ifdef NOT_TESTING
 int main(int argc, char * argv[]){
 
         int valid[21] = { 0,1,2,3,4,5,6,7,8,9,10,10,11,10,11,10,11,10,11,10,11 };
@@ -27,3 +27,4 @@ int main(int argc, char * argv[]){
 */
 
 }
+#endif
