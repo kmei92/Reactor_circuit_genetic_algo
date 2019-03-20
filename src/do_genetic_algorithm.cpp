@@ -29,11 +29,11 @@ double mutation_rate = 0.9;
 double *performance_list;
 int *performance_index;
 double *distribution;
-
-void sort_track_index(int *performance_index, double *performance_list){
-    sort(performance_index, performance_index + num_parents,
-         [performance_list](size_t i1, size_t i2) {return performance_list[i1] < performance_list[i2];});
-}
+//
+//void sort_track_index(int *performance_index, double *performance_list){
+//    sort(performance_index, performance_index + num_parents,
+//		[performance_list](size_t i1, size_t i2) {return performance_list[i1] < performance_list[i2];});
+//}
 
 void find_max_min(double *performance_list, int &max_index, int &min_index){
 
