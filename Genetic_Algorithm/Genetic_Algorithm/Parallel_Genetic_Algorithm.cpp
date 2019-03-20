@@ -8,6 +8,7 @@
 #include "../../includes/Cmatrix.h"
 
 using namespace std;
+
 int id, p;
 int *division;			// processor divisions
 //int **all_parents;
@@ -22,6 +23,8 @@ double mutation_rate = 0.9; // from serial
 double *performance_list;
 int *performance_index;
 double *distribution;
+
+bool write_to_file = false;
 
 // Function to split processors into evenly divided tasks
 void split_group(int *divisions) {
@@ -153,6 +156,7 @@ int main(int argc, char *argv[])
 	MPI_Comm_size(MPI_COMM_WORLD, &p);
 	srand(time(NULL) + id * 10);
 
+	// clock_t start = (double) clock();
 	// divide up the work among processors to create parent vectors
 	division = new int[p];
 	split_group(division);
@@ -169,7 +173,6 @@ int main(int argc, char *argv[])
 	// fill in only the necessary portions of the parent vectors in each processor
 	// PARALLEL PORTION
 	int count = 0;
-
 	for (int i = 0; i < division[id]; i++)
 	{
 		all_parents.data[i][0] = rand() % num_units;
@@ -195,8 +198,6 @@ int main(int argc, char *argv[])
 			count++;
 		}
 	}
-	
-	
 	// At this point, every processor has created its respective parent vectors
 	// Begin receiving parent vectors from every other processor
 	MPI_Request *recv_request = new MPI_Request[p - 1];
@@ -230,218 +231,227 @@ int main(int argc, char *argv[])
 	// Begin Genetic Algorithm to select select new generation
 	// From serial: variables
 	double exp_performance = 10000.0; // expected performance
-	int max_steps = 1000;          // max iteration steps
+	int max_steps = 100;          // max iteration steps
 	double best_performance = 10.0;      // best performance in one generation
 	int best_index;               // the index of the best performance one
 	double worst_performance;
 	double tol = 0.1;             // a small value to make sure even the worst one has the right to reproduce
 	int steps = 0;
 
-	// SERIAL BOTTLENECK - EVERY PROCESSOR HAS TO UNDERSTAND THE PERFORMANCE OF THE CURRENT GEN
-	//---------------------------
-	// run the circuit simulator
-	// Update function
-	//---------------------------
-	for (int i = 0; i < num_parents; i++)
+	do
 	{
-		performance_list[i] = Evaluate_Circuit(all_parents.data[i], 0.00001, 30, num_units, 10, 100, 100.0, 500.0);
-	}
-
-	// From serial: Evaluate the performance
-	// find the max and min value
-	int max_index, min_index;
-	find_max_min(performance_list, max_index, min_index);
-	// Choose the best and worst one
-	best_performance = performance_list[max_index];
-	best_index = max_index;
-	worst_performance = performance_list[min_index];
-
-	// From serial: if the performance is negative
-	if (worst_performance < 0) 
-	{
-		for (int i = 0; i < num_parents; i++) 
+		// SERIAL BOTTLENECK - EVERY PROCESSOR HAS TO UNDERSTAND THE PERFORMANCE OF THE CURRENT GENERATION
+		//---------------------------
+		// run the circuit simulator
+		// Update function
+		//---------------------------
+		for (int i = 0; i < num_parents; i++)
 		{
-			performance_list[i] = (performance_list[i] - worst_performance + tol);
+			performance_list[i] = Evaluate_Circuit(all_parents.data[i], 0.00001, 30, num_units, 10, 100, 100.0, 500.0);
 		}
-	}
 
-	// From serial: cast a needle to find parents
-	int *pair[2];
-	double sum = 0.0;
-	distribution[0] = 0.0;
-	for (int i = 0; i < num_parents; i++) 
-	{
-		sum += performance_list[i];
-		distribution[i + 1] = sum;
-	}
-	// PARALLEL PORTION - EACH PROCESSOR GENERATES NEW GENERATION AND THEN COMMUNICATES WITH EACH OTHER
+		// From serial: Evaluate the performance
+		// find the max and min value
+		int max_index, min_index;
+		find_max_min(performance_list, max_index, min_index);
+		// Choose the best and worst one
+		best_performance = performance_list[max_index];
+		best_index = max_index;
+		worst_performance = performance_list[min_index];
+		// From serial: if the performance is negative
+		if (worst_performance < 0)
+		{
+			for (int i = 0; i < num_parents; i++)
+			{
+				performance_list[i] = (performance_list[i] - worst_performance + tol);
+			}
+		}
+
+		// From serial: cast a needle to find parents
+		//int *pair[2];
+		double sum = 0.0;
+		distribution[0] = 0.0;
+		for (int i = 0; i < num_parents; i++)
+		{
+			sum += performance_list[i];
+			distribution[i + 1] = sum;
+		}
+
+		// PARALLEL PORTION - EACH PROCESSOR GENERATES NEW GENERATION AND THEN COMMUNICATES WITH EACH OTHER
+		if (id == 0)
+		{
+			// Only main processor will select the best parents to push to the next generation
+			for (int i = 0; i < length; i++)
+			{
+				new_all_parents.data[0][i] = all_parents.data[best_index][i];
+			}
+			count = 1;
+			while (count < division[id])
+			{
+				int tgt_parent_index_1;
+				int tgt_parent_index_2;
+				select_parent(tgt_parent_index_1, tgt_parent_index_2);
+				//pair[0] = all_parents.data[tgt_parent_index_1];
+				//pair[1] = all_parents.data[tgt_parent_index_2];
+				// Crossover to generate children
+				int pt = rand() % length;
+				while (pt == 0 || pt == length)
+				{
+					pt = rand() % length;
+				}
+
+				// Do cross over and Mutation
+				for (int i = 0; i < length; i++)
+				{
+					if (i < pt)
+					{
+						new_all_parents.data[count][i] = all_parents.data[tgt_parent_index_1][i];
+						// Decide whether to do mutation
+						if (RollingDice())
+						{
+							// Do mutation
+							mutation(count, i);
+						}
+					}
+					else
+					{
+						new_all_parents.data[count][i] = all_parents.data[tgt_parent_index_2][i];
+						if (RollingDice())
+						{
+							// Do mutation
+							mutation(count, i);
+						}
+					}
+				}
+				//Check
+				//-----------------------
+				// check validity here
+				// if true count ++
+				// if false continue without count ++
+				//-----------------------
+				if (Check_Validity(new_all_parents.data[count]))
+				{
+					count++;
+				}
+			}
+			swapping_parent_parallel(division, id);
+
+			// Now that the all_parents have been repopulated with new parents, send own parents to others and receive parents from others
+			send_cnt = 0;
+			for (int i = 0; i < p; i++)
+			{
+				if (i != id)
+				{
+					all_parents.send_matrix_rows(i, id, &send_request[send_cnt]);
+					send_cnt++;
+				}
+			}
+
+			recv_cnt = 0;
+			for (int i = 0; i < p; i++)
+			{
+				if (i != id)
+				{
+					all_parents.receive_matrix_rows(i, i, count, count + division[i] - 1, &recv_request[recv_cnt]);
+					recv_cnt++;
+					count += division[i];
+					all_parents.Clear_recv_Type();
+				}
+			}
+			MPI_Waitall(p - 1, recv_request, MPI_STATUSES_IGNORE);
+			steps++;
+		}
+		else
+		{
+			count = 0;
+			while (count < division[id])
+			{
+				int tgt_parent_index_1;
+				int tgt_parent_index_2;
+				select_parent(tgt_parent_index_1, tgt_parent_index_2);
+				//pair[0] = all_parents.data[tgt_parent_index_1];
+				//pair[1] = all_parents.data[tgt_parent_index_2];
+
+				// Crossover to generate children
+				int pt = rand() % length;
+				while (pt == 0 || pt == length)
+				{
+					pt = rand() % length;
+				}
+
+				// Do cross over and Mutation
+				for (int i = 0; i < length; i++)
+				{
+					if (i < pt)
+					{
+						new_all_parents.data[count][i] = all_parents.data[tgt_parent_index_1][i];
+						// Decide whether to do mutation
+						if (RollingDice())
+						{
+							// Do mutation
+							mutation(count, i);
+						}
+					}
+					else
+					{
+						new_all_parents.data[count][i] = all_parents.data[tgt_parent_index_2][i];
+						if (RollingDice())
+						{
+							// Do mutation
+							mutation(count, i);
+						}
+
+					}
+				}
+				//Check
+				//-----------------------
+				// check validity here
+				// if true count ++
+				// if false continue without count ++
+				//-----------------------
+				if (Check_Validity(new_all_parents.data[count]))
+				{
+					count++;
+				}
+			}
+			swapping_parent_parallel(division, id);
+
+			// Now that the all_parents have been repopulated with new parents, send and receive from other processors
+			int send_cnt = 0;
+			for (int i = 0; i < p; i++)
+			{
+				if (i != id)
+				{
+					all_parents.send_matrix_rows(i, id, &send_request[send_cnt]);
+					send_cnt++;
+				}
+			}
+
+			int recv_cnt = 0;
+			for (int i = 0; i < p; i++)
+			{
+				if (i != id)
+				{
+					all_parents.receive_matrix_rows(i, i, count, count + division[i] - 1, &recv_request[recv_cnt]);
+					recv_cnt++;
+					count += division[i];
+					all_parents.Clear_recv_Type();
+				}
+			}
+			MPI_Waitall(p - 1, recv_request, MPI_STATUSES_IGNORE);
+			steps++;
+		}
+	} while (best_performance < exp_performance && steps < max_steps);
+	// clock_t end = (double)clock();
 	if (id == 0)
 	{
-		// Only main processor will select the best parents to push to the next generation
-		for (int i = 0; i < 2 * num_units + 1; i++)
-		{
-			new_all_parents.data[0][i] = all_parents.data[best_index][i];
-		}
-		count = 1;
-		while (count < division[id])
-		{
-			int tgt_parent_index_1;
-			int tgt_parent_index_2;
-			select_parent(tgt_parent_index_1, tgt_parent_index_2);
-			pair[0] = all_parents.data[tgt_parent_index_1];
-			pair[1] = all_parents.data[tgt_parent_index_2];
-
-			// Crossover to generate children
-			int pt = rand() % length;
-			while (pt == 0 || pt == length) 
-			{
-				pt = rand() % length;
-			}
-
-			// Do cross over and Mutation
-			for (int i = 0; i < length; i++)
-			{
-				if (i < pt)
-				{
-					new_all_parents.data[count][i] = pair[0][i];
-					// Decide whether to do mutation
-					if (RollingDice())
-					{	
-						// Do mutation
-						mutation(count, i);
-					}
-					else
-					{
-						new_all_parents.data[count][i] = pair[1][i];
-						if (RollingDice())
-						{
-							// Do mutation
-							mutation(count, i);
-						}
-					}
-				}
-			}
-			//Check
-			//-----------------------
-			// check validity here
-			// if true count ++
-			// if false continue without count ++
-			//-----------------------
-			if (Check_Validity(new_all_parents.data[count])) 
-			{
-				count++;
-			}
-		}
-		swapping_parent_parallel(division, id);
-		
-		// Now that the all_parents have been repopulated with new parents, send and receive from other processors
-		int send_cnt = 0;
-		for (int i = 0; i < p; i++)
-		{
-			if (i != id)
-			{
-				all_parents.send_matrix_rows(i, id, &send_request[send_cnt]);
-				send_cnt++;
-			}
-		}
-
-		int recv_cnt = 0;
-		for (int i = 0; i < p; i++)
-		{
-			if (i != id)
-			{
-				all_parents.receive_matrix_rows(i, i, count, count + division[i] - 1, &recv_request[recv_cnt]);
-				recv_cnt++;
-				count += division[i];
-				all_parents.Clear_recv_Type();
-			}
-		}
-		MPI_Waitall(p - 1, recv_request, MPI_STATUSES_IGNORE);
-		steps++;
+		if (write_to_file) { all_parents.write_solution_vector(); }
+		//std::cout << "Total time (ms): " << (end - start) / CLOCKS_PER_SEC * 1000;
 	}
-	else
-	{
-		count = 0;
-		while (count < division[id])
-		{
-			int tgt_parent_index_1;
-			int tgt_parent_index_2;
-			select_parent(tgt_parent_index_1, tgt_parent_index_2);
-			pair[0] = all_parents.data[tgt_parent_index_1];
-			pair[1] = all_parents.data[tgt_parent_index_2];
-
-			// Crossover to generate children
-			int pt = rand() % length;
-			while (pt == 0 || pt == length)
-			{
-				pt = rand() % length;
-			}
-
-			// Do cross over and Mutation
-			for (int i = 0; i < length; i++)
-			{
-				if (i < pt)
-				{
-					new_all_parents.data[count][i] = pair[0][i];
-					// Decide whether to do mutation
-					if (RollingDice())
-					{
-						// Do mutation
-						mutation(count, i);
-					}
-					else
-					{
-						new_all_parents.data[count][i] = pair[1][i];
-						if (RollingDice())
-						{
-							// Do mutation
-							mutation(count, i);
-						}
-					}
-				}
-			}
-			//Check
-			//-----------------------
-			// check validity here
-			// if true count ++
-			// if false continue without count ++
-			//-----------------------
-			if (Check_Validity(new_all_parents.data[count]))
-			{
-				count++;
-			}
-		}
-		swapping_parent_parallel(division, id);
-
-		// Now that the all_parents have been repopulated with new parents, send and receive from other processors
-		int send_cnt = 0;
-		for (int i = 0; i < p; i++)
-		{
-			if (i != id)
-			{
-				all_parents.send_matrix_rows(i, id, &send_request[send_cnt]);
-				send_cnt++;
-			}
-		}
-
-		int recv_cnt = 0;
-		for (int i = 0; i < p; i++)
-		{
-			if (i != id)
-			{
-				all_parents.receive_matrix_rows(i, i, count, count + division[i] - 1, &recv_request[recv_cnt]);
-				recv_cnt++;
-				count += division[i];
-				all_parents.Clear_recv_Type();
-			}
-		}
-		MPI_Waitall(p - 1, recv_request, MPI_STATUSES_IGNORE);
-		steps++;
-	}
-
 	// Finished, clearing all memory
 	all_parents.Clear_recv_Type();
 	all_parents.Clear_send_Type();
+	// delete[] pair;
 	delete[] distribution;
 	delete[] performance_list;
 	delete[] performance_index;
