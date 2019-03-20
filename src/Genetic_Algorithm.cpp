@@ -114,9 +114,10 @@ double Evaluate_Circuit(int *circuit_vector, double tolerance, int max_iteration
   double revenue = circuit[num_units].feed[0] * profit - circuit[num_units].feed[1] * cost;
   std::cout << "revenue: " << revenue << std::endl;
   double performance = (revenue - absolute_worst)/profit;
-  std::cout << "performance: " << performance << std::endl;
+  //std::cout << "performance: " << performance << std::endl;
 
 
   delete[] circuit;
-  return performance;
+  //return performance;
+  return revenue;
 }

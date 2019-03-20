@@ -1,8 +1,9 @@
 #include <vector>
 #include <iostream>
 #include <stdio.h>
-#include <CUnit.h>
-#include <CCircuit.h>
+#include "../includes/CUnit.h"
+#include "../includes/CCircuit.h"
+
 
 std::vector<CUnit> units(num_units_all);
 int feed_num;
@@ -68,7 +69,7 @@ void mark_units(int unit_num) {
     } else {
         // ...Potentially do something to indicate that you have seen an exit
         //std::cout << " See the top! " << std::endl;
-        units[num_units_all - 2].mark = true; // error here
+        units[units[unit_num].conc_num].mark = true;
     }
     //If tails_num does not point at a circuit outlet recursively call the function
 
@@ -77,7 +78,7 @@ void mark_units(int unit_num) {
     } else {
         // ...Potentially do something to indicate that you have seen an exit
         //std::cout << " See the bottom!" << std::endl;
-        units[num_units_all - 1].mark = true;
+        units[units[unit_num].tails_num].mark = true;
     }
 
 }

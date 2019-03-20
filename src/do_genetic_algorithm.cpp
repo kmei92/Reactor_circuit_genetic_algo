@@ -3,6 +3,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <algorithm>
+#include <fstream>
 #include <sstream>
 #include <iostream>
 #include <fstream>
@@ -38,6 +39,8 @@ void find_max_min(double *performance_list, int &max_index, int &min_index){
 
     double min_value = performance_list[0];
     double max_value = performance_list[0];
+    max_index = 0;
+    min_index = 0;
 
     for (int i = 1; i < num_parents; i++){
         if (performance_list[i] > max_value){
@@ -102,7 +105,7 @@ void mutation(int count, int i){
     }
 }
 
-
+// swap the the old and new parents
 void swapping_parent(){
     for (int i = 0; i < num_parents; i++){
         for (int j = 0; j < length; j++){
@@ -190,12 +193,18 @@ int main(int argc, char *argv[]) {
     }
 
     double exp_performance = 10000.0; // expected performance
-    int max_steps = 10;          // max iteration steps
-    double best_performance = 10.0 ;      // best performance in one generation
+    int max_steps = 1000;          // max iteration steps
+    double best_performance = 10.0;      // best performance in one generation
     int best_index;               // the index of the best performance one
     double worst_performance;
     double tol = 0.1;             // a small value to make sure even the worst one has the right to reproduce
     int steps = 0;
+
+
+
+    ofstream performance_output;
+    performance_output.open("../performance_list.txt");
+
 
     // Out loop
     while(best_performance < exp_performance && steps < max_steps) {
@@ -209,6 +218,11 @@ int main(int argc, char *argv[]) {
             performance_list[i] = Evaluate_Circuit(all_parents[i], 0.00001, 30, num_units, 10, 100, 100.0, 500.0);
             //cout << "i  " << i << endl;
         }
+        cout << "Performance: ";
+        for (int i =0 ;i < num_parents; i++){
+            cout << performance_list[i] << " ";
+        }
+        cout << endl;
 
         // Evaluate the performance
         // find the max and min value
@@ -219,6 +233,11 @@ int main(int argc, char *argv[]) {
 
         // Choose the best one and the worst one
         best_performance = performance_list[max_index];
+
+        //----------------------------
+        performance_output << best_performance << endl;
+        //----------------------------
+
         cout << "best performance: " << best_performance << endl;
         best_index = max_index;
         worst_performance = performance_list[min_index];
@@ -290,11 +309,25 @@ int main(int argc, char *argv[]) {
 
 
         }
-
         swapping_parent();
         steps++;
         cout << "step " << steps<< endl;
+
     }
+
+    cout << endl;
+    performance_output.close();
+
+    ofstream final_vec;
+    final_vec.open("../data.txt");
+
+    cout << "final vector: " << endl;
+    for (int i = 0; i < length; i++){
+        cout << all_parents[best_index][i] << " ";
+        final_vec << all_parents[best_index][i] << " ";
+    }
+    cout << endl;
+    final_vec.close();
 
     for (int i = 0; i < num_parents; i++) {
         delete[] all_parents[i];
