@@ -15,7 +15,7 @@ ALL_TEST_BUILD_DIR = $(TEST_BUILD_DIR) $(TEST_BIN_DIR)
 
 all: do_genetic_algorithm
 
-do_genetic_algorithm: $(BIN_DIR)/do_genetic_algorithm.cpp
+do_genetic_algorithm: $(BIN_DIR)/do_genetic_algorithm
 
 $(BIN_DIR)/do_genetic_algorithm: $(BUILD_DIR)/Genetic_Algorithm.o $(BUILD_DIR)/CCircuit.o $(BUILD_DIR)/CUnit.o 
 	$(CXX) -o $@ $^
@@ -35,9 +35,9 @@ runtests: ${TESTS}
 
 tests: ${TESTS}
 
-test1: $(TEST_BIN_DIR)/test1.cpp
+test1: $(TEST_BIN_DIR)/test1
 
-test2: $(TEST_BIN_DIR)/test2.cpp
+test2: $(TEST_BIN_DIR)/test2
 
 $(TEST_BIN_DIR)/test1: $(TEST_BUILD_DIR)/test1.o $(BUILD_DIR)/CCircuit.o $(BUILD_DIR)/Cunit.o $(BUILD_DIR)/Genetic_Algorithm.o
 	$(CXX) -o $@ $^ $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS)
