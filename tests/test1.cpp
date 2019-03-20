@@ -13,7 +13,7 @@ int main(int argc, char * argv[]){
 
         if (Check_Validity(valid))
 	    std::cout  << "pass\n";
-	else
+		else
 	    std::cout << "fail\n";
 
 
