@@ -1,0 +1,21 @@
+digraph {
+	rankdir=LR
+	node [shape=rectangle]
+	Feed -> "Unit 1" [arrowhead=normal arrowtail=normal color=blue headport=w tailport=e]
+	"Unit 1" -> "Unit 3" [arrowhead=normal color=blue headport=w tailport=n]
+	"Unit 1" -> "Unit 2" [arrowhead=normal color=red headport=w tailport=s]
+	"Unit 2" -> Concentrate [arrowhead=normal color=blue headport=w tailport=n]
+	"Unit 2" -> Tailings [arrowhead=normal color=red headport=w tailport=s]
+	"Unit 3" -> Concentrate [arrowhead=normal color=blue headport=w tailport=n]
+	"Unit 3" -> Concentrate [arrowhead=normal color=red headport=w tailport=s]
+	{
+		rank=source
+		Feed
+	}
+	{
+		rank=sink
+		Tailings
+		Concentrate
+	}
+	label="vector: [0, 1, 2, 3, 4, 5, 6]"
+}
