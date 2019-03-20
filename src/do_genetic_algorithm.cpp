@@ -131,7 +131,7 @@ double UpdateFunction(int *vec, int size){
     return std;
 }
 */
-#ifndef NOT_TESTING
+#ifdef NOT_TESTING
 int main(int argc, char *argv[]) {
 
 
