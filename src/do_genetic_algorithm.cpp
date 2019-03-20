@@ -10,11 +10,11 @@
 #include <ctime>
 #include <vector>
 #include "Genetic_Algorithm.h"
-//#include "Genetic_Algorithm.cpp"
 #include "CCircuit.h"
 #include "CUnit.h"
 //#include "CUnit.cpp"
 //#include "CCircuit.cpp"
+//#include "Genetic_Algorithm.cpp"
 
 
 using namespace std;
