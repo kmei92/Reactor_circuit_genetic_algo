@@ -131,7 +131,7 @@ double UpdateFunction(int *vec, int size){
     return std;
 }
 */
-//#ifdef INCLUDE_MAIN
+//#ifndef main
 int main(int argc, char *argv[]) {
 
 
@@ -339,6 +339,7 @@ int main(int argc, char *argv[]) {
     delete [] performance_list;
     delete [] performance_index;
 }
+//#endif
 
 
 
