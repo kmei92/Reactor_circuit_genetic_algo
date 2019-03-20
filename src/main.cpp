@@ -20,7 +20,8 @@ using namespace std;
 
 int **all_parents;
 int **new_all_parents;
-int num_parents = 50;
+int num_parents = 100;
+int max_steps = 1000;
 double gene_change_rate = 0.01;
 double crossover_rate = 0.9;
 
@@ -297,7 +298,7 @@ int main(int argc, char *argv[]) {
     delete [] performance_list;
     */
     double start = clock();
-    run_genetic_algorithm(all_parents, new_all_parents, performance_list, distribution, num_parents, num_units);
+    run_genetic_algorithm(all_parents, new_all_parents, performance_list, distribution, num_parents, num_units, max_steps);
     double end = clock();
 
     cout << "Time used: " << (end - start) /CLOCKS_PER_SEC << endl;
