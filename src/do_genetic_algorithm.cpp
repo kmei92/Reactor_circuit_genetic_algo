@@ -131,7 +131,7 @@ double UpdateFunction(int *vec, int size){
     return std;
 }
 */
-
+//#ifdef INCLUDE_MAIN
 int main(int argc, char *argv[]) {
 
 
