@@ -13,11 +13,11 @@ TEST_BUILD_DIR = $(TEST_DIR)/build
 TEST_BIN_DIR = $(TEST_DIR)/bin
 ALL_TEST_BUILD_DIR = $(TEST_BUILD_DIR) $(TEST_BIN_DIR)
 
-all: Genetic_Algorithm
+all: do_genetic_algorithm
 
-Genetic_Algorithm: $(BIN_DIR)/do_genetic_algorithm.cpp
+do_genetic_algorithm: $(BIN_DIR)/do_genetic_algorithm.cpp
 
-$(BIN_DIR)/Genetic_Algorithm: $(BUILD_DIR)/Genetic_Algorithm.o $(BUILD_DIR)/CCircuit.o $(BUILD_DIR)/CUnit.o 
+$(BIN_DIR)/do_genetic_algorithm: $(BUILD_DIR)/Genetic_Algorithm.o $(BUILD_DIR)/CCircuit.o $(BUILD_DIR)/CUnit.o 
 	$(CXX) -o $@ $^
 
 $(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.cpp $(INCLUDE_DIR)/*.h | directories
@@ -26,7 +26,7 @@ $(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.cpp $(INCLUDE_DIR)/*.h | directories
 clean:
 	rm -f $(BUILD_DIR)/* $(BIN_DIR)/*
 
-.PHONY: Genetic_Algorithm all clean
+.PHONY: do_genetic_algorithm all clean
 
 TESTS = test1 test2
 
