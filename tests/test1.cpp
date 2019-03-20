@@ -11,7 +11,7 @@ int main(int argc, char * argv[]){
         int OneValid[7] = {0, 1, 2, 3, 0, 0, 4};
 	std::cout << "Check_Validity({0,1,2}):\n";
 
-        if (Check_Validity(invalid))
+        if (Check_Validity(valid))
 	    std::cout  << "pass\n";
 	else
 	    std::cout << "fail\n";
