@@ -296,7 +296,11 @@ int main(int argc, char *argv[]) {
     delete [] distribution;
     delete [] performance_list;
     */
+    double start = clock();
     run_genetic_algorithm(all_parents, new_all_parents, performance_list, distribution, num_parents, num_units);
+    double end = clock();
+
+    cout << "Time used: " << (end - start) /CLOCKS_PER_SEC << endl;
 
 }
 

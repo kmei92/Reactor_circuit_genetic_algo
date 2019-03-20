@@ -250,10 +250,48 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
                 pt = rand() % length;
             }
 
+            /*
+                //-------------------------------------------
+                // Old and more compact method
+                //-------------------------------------------
+
+                // Do cross over and Mutation
+                for (int i = 0; i < length; i++) {
+                    if (i < pt) {
+                        new_all_parents[count][i] = pair[0][i];
+                        // Decide whether put to mutation
+                        if (RollingDice()) {
+                            // Do mutation
+                            mutation(count, i);
+                        }
+                    }
+                    else {
+                        new_all_parents[count][i] = pair[1][i];
+                        if (RollingDice()) {
+                            // Do mutation
+                            mutation(count, i);
+                        }
+                    }
+                }
+
+                //Check
+                //-----------------------
+                // check validity here
+                // if true count ++
+                // if false continue without count ++
+                //-----------------------
+                if (Check_Validity(new_all_parents[count])) {
+                    count++;
+                }
+
+                */
+            //----------------------------------------------
+
+            if(RollingDice()) {
             // Do cross over and Mutation
             for (int i = 0; i < length; i++) {
                 // whether to do crossover
-                if(RollingDice()) {
+
                     // do crossover
                     if (i < pt) {
                         new_all_parents[count][i] = pair[0][i];
@@ -277,7 +315,9 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
                             mutation(i, new_all_parents[count + 1][i]);
                         }
                     }
-                }else{
+                }
+            }else {
+                for (int i = 0; i < length; i++) {
                     // keep parents unchanged
                     new_all_parents[count][i] = pair[0][i];
                     mutation(i, new_all_parents[count][i]);
@@ -297,7 +337,7 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
             //---------------------------------------------------
             if (Check_Validity(new_all_parents[count])){
                 count++;
-                if (count + 1 >= num_parents){
+                if (count >= num_parents){
                     continue;
                 }
             }else{
@@ -317,7 +357,7 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
             }
 
             // Check the second one if the first one valid
-            if (Check_Validity(new_all_parents[count+1])){
+            if (Check_Validity(new_all_parents[count])){
                 count++;
             }
 
@@ -350,8 +390,5 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
     delete[] new_all_parents;
     delete [] distribution;
     delete [] performance_list;
-
-
-
 
 }
