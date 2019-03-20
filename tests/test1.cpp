@@ -1,7 +1,7 @@
 #include <iostream>
 #include "CUnit.h"
 #include "CCircuit.h"
-#include "CCircuit.cpp"
+
 
 
 int main(int argc, char * argv[]){
