@@ -1,6 +1,10 @@
 #ifndef CCIRCUIT_H
 #define CCIRCUIT_H
+
+#include<vector>
 const int num_units = 10;
+
+
 
 const int num_units_all = num_units + 2;
 

@@ -1,20 +1,23 @@
 #include <vector>
 #include <iostream>
 #include <stdio.h>
-#include <CUnit.h>
-#include <CCircuit.h>
+#include "CUnit.h"
+#include "CCircuit.h"
 
 std::vector<CUnit> units(num_units_all);
-int feed_num;
+
 
 bool Check_Validity(int *circuit_vector)
 {
+	int feed_num;
     for(int i = 1; i < 2 * num_units + 1; i = i + 2){
         units[i/2].conc_num = circuit_vector[i];
         units[i/2].tails_num = circuit_vector[i+1];
         units[i/2].mark = false;
     }
     feed_num = circuit_vector[0];
+	//cout << "circuit vector" << circuit_vector[0] << endl;
+	//cout << "feed number" << feed_num << endl;
     /*
     for (int i=0; i < num_units; i++)
         units[i].mark = false;
@@ -24,7 +27,7 @@ bool Check_Validity(int *circuit_vector)
     // Criterion 1
     for (int i = 0; i < num_units; i++) {
         if (!units[i].mark) {
-            std::cout <<"id: " << i <<" Criterion 1 fail!"<< std::endl;
+            //std::cout <<"id: " << i <<" Criterion 1 fail!"<< std::endl;
             return false;
         }
     }
@@ -33,14 +36,14 @@ bool Check_Validity(int *circuit_vector)
 
         // Criterion 3 and Criterion 4
         if (circuit_vector[i] == i/2 ||circuit_vector[i+1] == i/2 || circuit_vector[i] == circuit_vector[i+1]){
-            std::cout <<" Criterion 3 and Criterion 4 fail!"<< std::endl;
+           // std::cout <<" Criterion 3 and Criterion 4 fail!"<< std::endl;
             return false;
         }
 
         // Criterion 2
         mark_units(i/2);
         if(!units[num_units_all - 1].mark || !units[num_units_all - 2].mark){
-            std::cout << "i:"<< i <<" Criterion 2 fail!"<< std::endl;
+           // std::cout << "i:"<< i <<" Criterion 2 fail!"<< std::endl;
             return false;
         }
 

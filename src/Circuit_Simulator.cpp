@@ -3,9 +3,9 @@
 #include <math.h>
 #include <iostream>
 
-#include "../includes/CCircuit.h"
-#include "../includes/CUnit.h"
-#include "../includes/Circuit_Simulator.h"
+#include "CCircuit.h"
+#include "CUnit.h"
+#include "Circuit_Simulator.h"
 
 
 double relative_change(double a, double b, double c, double d)
@@ -111,7 +111,7 @@ double Evaluate_Circuit(int *circuit_vector, double tolerance, int max_iteration
   //calculating the performance
   double absolute_worst = waste * (- cost);
   double revenue = circuit[num_units].feed[0] * profit - circuit[num_units].feed[1] * cost;
-  std::cout << "revenue: " << revenue << std::endl;
+  //std::cout << "revenue: " << revenue << std::endl;
   double performance = (revenue - absolute_worst)/profit;
   //std::cout << "performance: " << performance << std::endl;
 

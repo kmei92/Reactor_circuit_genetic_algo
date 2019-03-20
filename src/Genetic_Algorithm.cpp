@@ -78,8 +78,10 @@ void mutation(int i, int &current_value, double gene_change_rate){
     if (needle > 100 - 100 * gene_change_rate) {
         if (i == 0 ){
             current_value =  rand() % num_units;
+			//cout <<"mutation" << endl;
         }else {
             current_value = rand() % (num_units + 2);
+			//cout << "mutation" << endl;
         }
     }
 }
@@ -139,9 +141,9 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
         if(!Check_Validity(all_parents[i])){
             i--;
             flag_right = false;
-            cout << "i "<< i << endl;
+            //cout << "i "<< i << endl;
         }else{
-            cout << "valid!!! " <<endl;
+            //cout << "valid!!! " <<endl;
             flag_right = true;
         }
 
@@ -182,11 +184,11 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
             performance_list[i] = Evaluate_Circuit(all_parents[i], 0.00001, 30, num_units, 10, 100, 100.0, 500.0);
             //cout << "i  " << i << endl;
         }
-        cout << "Performance: ";
+        //cout << "Performance: ";
         for (int i =0 ;i < num_parents; i++){
-            cout << performance_list[i] << " ";
+            //cout << performance_list[i] << " ";
         }
-        cout << endl;
+        //cout << endl;
 
         // Evaluate the performance
         // find the max and min value
@@ -199,8 +201,8 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
         best_performance = performance_list[max_index];
         best_index = max_index;
         worst_performance = performance_list[min_index];
-        cout << "best performance: " << best_performance << endl;
-        cout << "worst performance: " << worst_performance << endl;
+        //cout << "best performance: " << best_performance << endl;
+        //cout << "worst performance: " << worst_performance << endl;
 
 
         double avg = 0.0;
@@ -208,7 +210,7 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
             avg += performance_list[i];
         }
         avg = avg / num_parents;
-        cout << "average: "<< avg;
+       // cout << "average: "<< avg;
 
         //----------------------------
         performance_output << best_performance << " "<< worst_performance << " " << avg <<  endl;
@@ -249,42 +251,48 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
             while (pt == 0 || pt == length - 1) {
                 pt = rand() % length;
             }
-
+			if (RollingDice()) {
             // Do cross over and Mutation
-            for (int i = 0; i < length; i++) {
-                // whether to do crossover
-                if(RollingDice()) {
-                    // do crossover
-                    if (i < pt) {
-                        new_all_parents[count][i] = pair[0][i];
-                        // Do mutation
-                        mutation(i, new_all_parents[count][i]);
+				for (int i = 0; i < length; i++) {
+					// whether to do crossover
+						// do crossover
+					if (i < pt) {
+						new_all_parents[count][i] = pair[0][i];
+						// Do mutation
+						mutation(i, new_all_parents[count][i]);
+						//cout << "crossover after mu count front part" << count << " "<< new_all_parents[count][i] << endl;
 
-                        if (count + 1 < num_parents) {
-                            new_all_parents[count + 1][i] = pair[1][i];
-                            // Do mutation
-                            mutation(i, new_all_parents[count + 1][i]);
-                        }
+						if (count + 1 < num_parents) {
+							new_all_parents[count + 1][i] = pair[1][i];
+							// Do mutation
+							mutation(i, new_all_parents[count + 1][i]);
+							//cout << "crossover after mu count+1 front part" << count << " "<< new_all_parents[count+1][i] << endl;
+						}
 
-                    } else {
-                        new_all_parents[count][i] = pair[1][i];
-                        // Do mutation
-                        mutation(i, new_all_parents[count][i]);
+					}else {
+						new_all_parents[count][i] = pair[1][i];
+						// Do mutation
+						mutation(i, new_all_parents[count][i]);
+						//cout << "crossover after mu count back part" << count << " " << new_all_parents[count][i] << endl;
 
-                        if (count + 1 < num_parents) {
-                            new_all_parents[count + 1][i] = pair[0][i];
-                            // Do mutation
-                            mutation(i, new_all_parents[count + 1][i]);
-                        }
-                    }
+						if (count + 1 < num_parents) {
+							new_all_parents[count + 1][i] = pair[0][i];
+							// Do mutation
+							mutation(i, new_all_parents[count + 1][i]);
+							//cout << "crossover after mu count+1 back part " << count << " " << new_all_parents[count+1][i] << endl;
+						}
+					}
+				}
                 }else{
+				for (int i = 0; i < length; i++) {
                     // keep parents unchanged
                     new_all_parents[count][i] = pair[0][i];
                     mutation(i, new_all_parents[count][i]);
-
+					//cout << "no crossover after mu count " << count << " " << new_all_parents[count][i] << endl;
                     if (count + 1 < num_parents) {
                         new_all_parents[count + 1][i] = pair[1][i];
                         mutation(i, new_all_parents[count + 1][i]);
+						//cout << "no crossover after mu count + 1 "  << count << " " << new_all_parents[count + 1][i] << endl;
                     }
                 }
             }
@@ -296,8 +304,10 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
             // if both invalid, continue
             //---------------------------------------------------
             if (Check_Validity(new_all_parents[count])){
+				//cout << "valid 1, count " << count<<endl;
                 count++;
-                if (count + 1 >= num_parents){
+			
+                if (count >= num_parents){
                     continue;
                 }
             }else{
@@ -306,6 +316,7 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
                 }
                 // check the second one if the first one invalid
                 if (Check_Validity(new_all_parents[count+1])){
+					//cout << "valid 2, count " << count << endl;
                     for (int i = 0; i < length; i++){
                         new_all_parents[count][i] = new_all_parents[count+1][i];
                     }
@@ -317,14 +328,15 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
             }
 
             // Check the second one if the first one valid
-            if (Check_Validity(new_all_parents[count+1])){
+            if (Check_Validity(new_all_parents[count])){
+				//cout << "valid 3, count " << count << endl;
                 count++;
             }
 
         }
         swapping_parent(all_parents, new_all_parents, num_parents, length);
         steps++;
-        cout << "step " << steps<< endl;
+        //cout << "step " << steps<< endl;
 
     }
 
