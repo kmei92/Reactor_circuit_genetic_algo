@@ -10,12 +10,8 @@
 #include <ctime>
 #include <vector>
 #include "Genetic_Algorithm.h"
-#include "Genetic_Algorithm.cpp"
 #include "CCircuit.h"
 #include "CUnit.h"
-#include "CUnit.cpp"
-#include "CCircuit.cpp"
-
 
 using namespace std;
 
@@ -59,12 +55,14 @@ void find_max_min(double *performance_list, int &max_index, int &min_index){
 
 void select_parent(int &tgt_parent_index_1, int &tgt_parent_index_2){
     int pt1, pt2;
-    pt1 = rand() % int(performance_list[num_parents - 1]);
-    pt2 = rand() % int(performance_list[num_parents - 1]);
+    //pt1 = rand() % int(performance_list[num_parents - 1]);
+    //pt2 = rand() % int(performance_list[num_parents - 1]);
+    pt1 = rand() % int(distribution[num_parents]);
+    pt2 = rand() % int(distribution[num_parents]);
 
     while(pt1 == pt2) {
-        pt1 = rand() % int(performance_list[num_parents - 1]);
-        pt2 = rand() % int(performance_list[num_parents - 1]);
+        pt1 = rand() % int(distribution[num_parents]);
+        pt2 = rand() % int(distribution[num_parents]);
     }
 
     for (int j = 0; j < num_parents; j++) {
@@ -233,20 +231,28 @@ int main(int argc, char *argv[]) {
 
         // Choose the best one and the worst one
         best_performance = performance_list[max_index];
-
-        //----------------------------
-        performance_output << best_performance << endl;
-        //----------------------------
-
-        cout << "best performance: " << best_performance << endl;
         best_index = max_index;
         worst_performance = performance_list[min_index];
+        cout << "best performance: " << best_performance << endl;
         cout << "worst performance: " << worst_performance << endl;
+
+
+
+        double avg = 0.0;
+        for (int i = 0; i < num_parents; i++){
+            avg += performance_list[i];
+        }
+        avg = avg / num_parents;
+        cout << "average: "<< avg;
+
+        //----------------------------
+        performance_output << best_performance << " "<< worst_performance << " " << avg <<  endl;
+        //----------------------------
 
         // If the performance is negative
         if (worst_performance < 0){
             for (int i = 0; i < num_parents; i++){
-                performance_list[i] = (performance_list[i] + worst_performance + tol);
+                performance_list[i] = (performance_list[i] - worst_performance + tol);
             }
         }
 
@@ -274,7 +280,7 @@ int main(int argc, char *argv[]) {
             pair[1] = all_parents[tgt_parent_index_2];
 
             // Crossover to generate children
-            int pt;
+            int pt = rand() % length;
             while (pt == 0 || pt == length - 1) {
                 pt = rand() % length;
             }
@@ -315,7 +321,8 @@ int main(int argc, char *argv[]) {
 
     }
 
-    cout << endl;
+    performance_output << endl;
+
     performance_output.close();
 
     ofstream final_vec;
