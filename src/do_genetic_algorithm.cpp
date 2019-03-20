@@ -59,12 +59,12 @@ void find_max_min(double *performance_list, int &max_index, int &min_index){
 
 void select_parent(int &tgt_parent_index_1, int &tgt_parent_index_2){
     int pt1, pt2;
-    pt1 = rand() % int(performance_list[num_parents - 1]);
-    pt2 = rand() % int(performance_list[num_parents - 1]);
+    pt1 = rand() % int(distribution[num_parents]);
+    pt2 = rand() % int(distribution[num_parents]);
 
     while(pt1 == pt2) {
-        pt1 = rand() % int(performance_list[num_parents - 1]);
-        pt2 = rand() % int(performance_list[num_parents - 1]);
+        pt1 = rand() % int(distribution[num_parents]);
+        pt2 = rand() % int(distribution[num_parents]);
     }
 
     for (int j = 0; j < num_parents; j++) {
@@ -116,7 +116,7 @@ void swapping_parent(){
         }
     }
 }
-
+/*
 double UpdateFunction(int *vec, int size){
     int sum = 0;
     double std, avg;
@@ -130,7 +130,7 @@ double UpdateFunction(int *vec, int size){
     std = pow(std, 0.5);
     return std;
 }
-
+*/
 
 int main(int argc, char *argv[]) {
 
@@ -246,7 +246,7 @@ int main(int argc, char *argv[]) {
         // If the performance is negative
         if (worst_performance < 0){
             for (int i = 0; i < num_parents; i++){
-                performance_list[i] = (performance_list[i] + worst_performance + tol);
+                performance_list[i] = (performance_list[i] - worst_performance + tol);
             }
         }
 
@@ -274,7 +274,7 @@ int main(int argc, char *argv[]) {
             pair[1] = all_parents[tgt_parent_index_2];
 
             // Crossover to generate children
-            int pt;
+			int pt = rand() % length;
             while (pt == 0 || pt == length - 1) {
                 pt = rand() % length;
             }
