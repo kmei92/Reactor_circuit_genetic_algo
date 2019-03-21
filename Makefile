@@ -13,11 +13,11 @@ TEST_BUILD_DIR = $(TEST_DIR)/build
 TEST_BIN_DIR = $(TEST_DIR)/bin
 ALL_TEST_BUILD_DIR = $(TEST_BUILD_DIR) $(TEST_BIN_DIR)
 
-all: Genetic_Algorithm
+all: main
 
-Genetic_Algorithm: $(BIN_DIR)/Genetic_Algorithm
+main: $(BIN_DIR)/main
 
-$(BIN_DIR)/Genetic_Algorithm: $(BUILD_DIR)/Genetic_Algorithm.o $(BUILD_DIR)/CCircuit.o $(BUILD_DIR)/main.o 
+$(BIN_DIR)/main: $(BUILD_DIR)/Genetic_Algorithm.o $(BUILD_DIR)/CCircuit.o $(BUILD_DIR)/CUnit.o $(BUILD_DIR)/main.o $(BUILD_DIR)/Circuit_Simulator.o
 	$(CXX) -o $@ $^
 
 $(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.cpp $(INCLUDE_DIR)/*.h | directories
@@ -26,7 +26,7 @@ $(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.cpp $(INCLUDE_DIR)/*.h | directories
 clean:
 	rm -f $(BUILD_DIR)/* $(BIN_DIR)/*
 
-.PHONY: Genetic_Algorithm all clean
+.PHONY: main all clean
 
 TESTS = test1 test2
 
@@ -39,10 +39,10 @@ test1: $(TEST_BIN_DIR)/test1
 
 test2: $(TEST_BIN_DIR)/test2
 
-$(TEST_BIN_DIR)/test1: $(TEST_BUILD_DIR)/test1.o $(BUILD_DIR)/CCircuit.o
+$(TEST_BIN_DIR)/test1: $(TEST_BUILD_DIR)/test1.o $(BUILD_DIR)/CCircuit.o $(BUILD_DIR)/CUnit.o $(BUILD_DIR)/Genetic_Algorithm.o $(BUILD_DIR)/Circuit_Simulator.o
 	$(CXX) -o $@ $^ $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS)
 
-$(TEST_BIN_DIR)/test2: $(TEST_BUILD_DIR)/test2.o $(BUILD_DIR)/Genetic_Algorithm.o
+$(TEST_BIN_DIR)/test2: $(TEST_BUILD_DIR)/test2.o $(BUILD_DIR)/Genetic_Algorithm.o $(BUILD_DIR)/CCircuit.o $(BUILD_DIR)/CUnit.o $(BUILD_DIR)/Circuit_Simulator.o
 	$(CXX) -o $@ $^ $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS)
 
 $(TEST_BUILD_DIR)/%.o: $(TEST_DIR)/%.cpp $(INCLUDE_DIR)/*.h | test_directories
