@@ -16,7 +16,9 @@ using namespace std;
 bool Check_Convergence(double expected_performance, double performance, double tol, int steps, int max_steps)
 {
 	bool has_converged = false;
-	if (std::abs(performance - expected_performance) < tol && steps > max_steps)
+	double difference = performance - expected_performance;
+	if (difference < 0) { difference = -1.0 * difference; }
+	if (difference < tol && steps > max_steps)
 	{
 		has_converged = true;
 	}
