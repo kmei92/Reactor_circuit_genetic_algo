@@ -2,13 +2,12 @@
 #include <cmath>
 #include <math.h>
 #include <iostream>
+#include "CCircuit.h"
+#include "CUnit.h"
+#include "Circuit_Simulator.h"
 #include <algorithm>
-#include "../includes/CCircuit.h"
-#include "../includes/CUnit.h"
-#include "../includes/Circuit_Simulator.h"
 
 vector<CUnit> circuit;
-
 
 double relative_change(double a, double b, double c, double d)
 {
@@ -20,6 +19,7 @@ double relative_change(double a, double b, double c, double d)
 }
 double Evaluate_Circuit(int *circuit_vector, double tolerance, int max_iterations, int num_units, double conc, double waste, double profit, double cost)
 {
+
 	circuit.resize(num_units + 2);
 	double max_change;
 
@@ -95,4 +95,5 @@ double Evaluate_Circuit(int *circuit_vector, double tolerance, int max_iteration
 	if (it == max_iterations)	
 		revenue = absolute_worst;
 	return revenue;
+
 }
