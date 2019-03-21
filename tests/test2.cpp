@@ -38,10 +38,8 @@ int main(int argc, char * argv[])
 	  double *distribution;
 
 	  for (int i = 0; i < num_parents; i++) {
-		  if (flag_right) {
-			  all_parents[i] = new int[2 * num_units + 1];
-			  new_all_parents[i] = new int[2 * num_units + 1];
-		  }
+		  all_parents[i] = new int[2 * num_units + 1];
+		  new_all_parents[i] = new int[2 * num_units + 1];
 		  all_parents[i][0] = rand() % num_units;
 
 		  for (int j = 1; j < 2 * num_units + 1; j += 2) {
