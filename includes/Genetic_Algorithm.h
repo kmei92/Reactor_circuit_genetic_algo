@@ -10,7 +10,7 @@ void select_parent(int &tgt_parent_index_1, int &tgt_parent_index_2, double *dis
 
 bool RollingDice(double crossover_rate = 0.9);
 
-void mutation(int i, int &current_value, double gene_change_rate = 0.01);
+void mutation(int *circuit_vector, double gene_change_rate = 0.01);
 
 void swapping_parent(int **all_parents, int **new_all_parents, int num_parents, int length);
 

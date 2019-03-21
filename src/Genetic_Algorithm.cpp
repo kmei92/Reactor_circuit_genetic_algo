@@ -14,6 +14,7 @@
 
 using namespace std;
 
+// Find the max and min value as well as the index of performance
 void find_max_min(double *performance_list, int num_parents, int &max_index, int &min_index){
 
     double min_value = performance_list[0];
@@ -36,16 +37,16 @@ void find_max_min(double *performance_list, int num_parents, int &max_index, int
 }
 
 void select_parent(int &tgt_parent_index_1, int &tgt_parent_index_2, double *distribution, int num_parents){
-    int pt1, pt2;
-    //pt1 = rand() % int(performance_list[num_parents - 1]);
-    //pt2 = rand() % int(performance_list[num_parents - 1]);
-    pt1 = rand() % int(distribution[num_parents]);
-    pt2 = rand() % int(distribution[num_parents]);
+    double pt1, pt2;
 
-    while(pt1 == pt2) {
-        pt1 = rand() % int(distribution[num_parents]);
-        pt2 = rand() % int(distribution[num_parents]);
-    }
+    do {
+        // Generate 2 random double value between 0 and max value in distribution
+        pt1 = ((double)rand()/RAND_MAX) * distribution[num_parents];
+        pt2 = ((double)rand()/RAND_MAX) * distribution[num_parents];
+        //pt1 = rand() % int(distribution[num_parents]);
+        //pt2 = rand() % int(distribution[num_parents]);
+
+    }while(pt1 == pt2);
 
     for (int j = 1; j < num_parents + 1; j++) {
         if (pt1 < distribution[j]) {
@@ -63,7 +64,7 @@ void select_parent(int &tgt_parent_index_1, int &tgt_parent_index_2, double *dis
 
 }
 
-// whether to mutation
+// Randomly decide whether to do crossover
 bool RollingDice(double crossover_rate){
     int i = 1 + rand() % 100;
     if (i < crossover_rate * 100)
@@ -72,14 +73,17 @@ bool RollingDice(double crossover_rate){
         return false;
 }
 
-void mutation(int i, int &current_value, double gene_change_rate){
+// Do mutation
+void mutation(int *circuit_vector, double gene_change_rate){
     int needle;
-    needle = 1 + rand() % 100;
-    if (needle > 100 - 100 * gene_change_rate) {
-        if (i == 0 ){
-            current_value =  rand() % num_units;
-        }else {
-            current_value = rand() % (num_units + 2);
+    for (int i = 0; i < num_units * 2 + 1; i++) {
+        needle = 1 + rand() % 100;
+        if (needle > 100 - 100 * gene_change_rate) {
+            if (i == 0) {
+                circuit_vector[i] = rand() % num_units;
+            } else {
+                circuit_vector[i] = rand() % (num_units + 2);
+            }
         }
     }
 }
@@ -97,55 +101,11 @@ void swapping_parent(int **all_parents, int **new_all_parents, int num_parents, 
 }
 
 
-void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *performance_list, double *distribution, int num_parents, int num_units,
+void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *performance_list, double *distribution, int num_parents, int num_units, int max_steps,
                            double gene_change_rate, double crossover_rate){
 
-
     srand(time(NULL));
-
     int length = num_units * 2 + 1;
-    // Initialize the parent vector
-    all_parents = new int*[num_parents];
-    new_all_parents = new int*[num_parents];
-
-    // Initialize values
-    distribution= new double[num_parents + 1];
-    performance_list = new double[num_parents];
-
-
-    bool flag_right = true;
-    // Initialize values for parents
-    for (int i = 0; i < num_parents; i++) {
-        if (flag_right) {
-            all_parents[i] = new int[2 * num_units + 1];
-            new_all_parents[i] = new int[2 * num_units + 1];
-        }
-        all_parents[i][0] = rand() % num_units;
-
-        for (int j = 1; j < 2 * num_units + 1; j += 2) {
-            int index = j / 2;
-            int top = rand() % (num_units + 2);
-            int bot = rand() % (num_units + 2);
-            while (top == index || bot == index || top == bot) {
-                top = rand() % (num_units + 2);
-                bot = rand() % (num_units + 2);
-            }
-            all_parents[i][j] = top;
-            all_parents[i][j + 1] = bot;
-            //cout << all_parents[i][j]  << " "<< all_parents[i][j + 1]<< " ";
-        }
-
-        // Check if the randomly generated vector is valid
-        if(!Check_Validity(all_parents[i])){
-            i--;
-            flag_right = false;
-            cout << "i "<< i << endl;
-        }else{
-            cout << "valid!!! " <<endl;
-            flag_right = true;
-        }
-
-    }
 
     // print all the vectors
     for (int i = 0; i < num_parents; i++) {
@@ -157,14 +117,18 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
         }
     }
 
-
+    int max_index, min_index; // the index of the best performance one
     double exp_performance = 10000.0; // expected performance
-    int max_steps = 1000;          // max iteration steps
-    double best_performance = 10.0;      // best performance in one generation
-    int best_index;               // the index of the best performance one
+    // max iteration steps
+    double best_performance;      // best performance in one generation
     double worst_performance;
     double tol = 0.1;             // a small value to make sure even the worst one has the right to reproduce
     int steps = 0;
+
+    int *circuit_child1 = new int[length]; // potential child 1
+    int *circuit_child2 = new int[length]; // potential child 2
+    double t1, t2;
+    double t_sum = 0;
 
 
     ofstream performance_output;
@@ -177,30 +141,32 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
         // run the circuit simulator
         // Update function
         //---------------------------
+        t1 = clock();
         for (int i = 0; i < num_parents; i++){
             //performance_list[i] = UpdateFunction(all_parents[i], length);
-            performance_list[i] = Evaluate_Circuit(all_parents[i], 0.00001, 30, num_units, 10, 100, 100.0, 500.0);
+            performance_list[i] = Evaluate_Circuit(all_parents[i], 0.0001, 30, num_units, 10, 100, 100.0, 500.0);
             //cout << "i  " << i << endl;
         }
+        t2 = clock();
+
+        t_sum += (t2 - t1)/CLOCKS_PER_SEC;
+        /*
         cout << "Performance: ";
         for (int i =0 ;i < num_parents; i++){
             cout << performance_list[i] << " ";
         }
         cout << endl;
+         */
 
         // Evaluate the performance
         // find the max and min value
-        int max_index, min_index;
         find_max_min(performance_list, num_parents, max_index, min_index);
-        //sort_track_index(test, performance_list);
-        //sort(performance_list, performance_list + num_parents);
 
         // Choose the best one and the worst one
         best_performance = performance_list[max_index];
-        best_index = max_index;
         worst_performance = performance_list[min_index];
-        cout << "best performance: " << best_performance << endl;
-        cout << "worst performance: " << worst_performance << endl;
+        //cout << "best performance: " << best_performance << endl;
+        //cout << "worst performance: " << worst_performance << endl;
 
 
         double avg = 0.0;
@@ -208,7 +174,7 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
             avg += performance_list[i];
         }
         avg = avg / num_parents;
-        cout << "average: "<< avg;
+        //cout << "average: "<< avg;
 
         //----------------------------
         performance_output << best_performance << " "<< worst_performance << " " << avg <<  endl;
@@ -232,7 +198,7 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
 
         // push the best one to next generation
         for (int i = 0; i < length; i++) {
-            new_all_parents[0][i] = all_parents[best_index][i];
+            new_all_parents[0][i] = all_parents[max_index][i];
         }
 
         int count = 1;
@@ -243,12 +209,6 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
             select_parent(tgt_parent_index_1, tgt_parent_index_2, distribution, num_parents);
             pair[0] = all_parents[tgt_parent_index_1];
             pair[1] = all_parents[tgt_parent_index_2];
-
-            // Crossover to generate children
-            pt = rand() % length;
-            while (pt == 0 || pt == length - 1) {
-                pt = rand() % length;
-            }
 
             /*
                 //-------------------------------------------
@@ -286,85 +246,62 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
 
                 */
             //----------------------------------------------
+            // Check whether to do the crossover
+                if (RollingDice()) {
 
-            if(RollingDice()) {
-            // Do cross over and Mutation
-            for (int i = 0; i < length; i++) {
-                // whether to do crossover
-
-                    // do crossover
-                    if (i < pt) {
-                        new_all_parents[count][i] = pair[0][i];
-                        // Do mutation
-                        mutation(i, new_all_parents[count][i]);
-
-                        if (count + 1 < num_parents) {
-                            new_all_parents[count + 1][i] = pair[1][i];
-                            // Do mutation
-                            mutation(i, new_all_parents[count + 1][i]);
-                        }
-
-                    } else {
-                        new_all_parents[count][i] = pair[1][i];
-                        // Do mutation
-                        mutation(i, new_all_parents[count][i]);
-
-                        if (count + 1 < num_parents) {
-                            new_all_parents[count + 1][i] = pair[0][i];
-                            // Do mutation
-                            mutation(i, new_all_parents[count + 1][i]);
-                        }
+                    // Crossover to generate children
+                    pt = rand() % length;
+                    while (pt == 0 || pt == length - 1) {
+                        pt = rand() % length;
                     }
-                }
-            }else {
-                for (int i = 0; i < length; i++) {
+                    // the part before the break point
+                    for (int i = 0; i < pt; i++) {
+                        circuit_child1[i] = pair[0][i];
+                        circuit_child2[i] = pair[1][i];
+
+                    }
+                    // the part after the break point
+                    for (int i = pt; i < length; i++) {
+                        circuit_child1[i] = pair[1][i];
+                        circuit_child2[i] = pair[0][i];
+
+                    }
+                } else {
                     // keep parents unchanged
-                    new_all_parents[count][i] = pair[0][i];
-                    mutation(i, new_all_parents[count][i]);
-
-                    if (count + 1 < num_parents) {
-                        new_all_parents[count + 1][i] = pair[1][i];
-                        mutation(i, new_all_parents[count + 1][i]);
+                    for (int i = 0; i < length; i++) {
+                        circuit_child1[i] = pair[0][i];
+                        circuit_child2[i] = pair[1][i];
                     }
                 }
-            }
-            //---------------------------------------------------
-            // Check the two new children
-            // if 1st and 2nd one are both valid, count = count + 2
-            // if 1st valid and 2nd invalid, count++
-            // if 1st invalid and 2nd valid, give the values of 2nd to the 1st, then count++
-            // if both invalid, continue
-            //---------------------------------------------------
-            if (Check_Validity(new_all_parents[count])){
-                count++;
-                if (count >= num_parents){
-                    continue;
-                }
-            }else{
-                if (count + 1 >= num_parents){
-                    continue;
-                }
-                // check the second one if the first one invalid
-                if (Check_Validity(new_all_parents[count+1])){
-                    for (int i = 0; i < length; i++){
-                        new_all_parents[count][i] = new_all_parents[count+1][i];
+                // Do mutation
+                mutation(circuit_child1);
+                mutation(circuit_child2);
+
+                // Check the first potential child
+                if (Check_Validity(circuit_child1)){
+                    for (int i = 0; i < length; i++) {
+                        new_all_parents[count][i] = circuit_child1[i];
                     }
                     count++;
-                    continue;
-                }else{
-                    continue;
                 }
-            }
 
-            // Check the second one if the first one valid
-            if (Check_Validity(new_all_parents[count])){
-                count++;
-            }
+                // Check whether filling is finished
+                if (count >= num_parents){
+                    break;
+                }
+
+                // Check the second potential child
+                if (Check_Validity(circuit_child2)){
+                    for (int i = 0; i < length; i++) {
+                        new_all_parents[count][i] = circuit_child2[i];
+                    }
+                    count++;
+                }
 
         }
         swapping_parent(all_parents, new_all_parents, num_parents, length);
         steps++;
-        cout << "step " << steps<< endl;
+        //cout << "step " << steps<< endl;
 
     }
 
@@ -373,22 +310,18 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
     ofstream final_vec;
     final_vec.open("../data.txt");
 
+    cout << "simulation function time used: " << t_sum << endl;
+    cout << "best performance: "<< best_performance << endl;
     cout << "final vector: " << endl;
     for (int i = 0; i < length; i++){
-        cout << all_parents[best_index][i] << " ";
-        final_vec << all_parents[best_index][i] << " ";
+        cout << all_parents[max_index][i]  << " ";
+        final_vec << all_parents[max_index][i] << " ";
     }
     cout << endl;
     final_vec.close();
 
-    for (int i = 0; i < num_parents; i++) {
-        delete[] all_parents[i];
-        delete[] new_all_parents[i];
-    }
 
-    delete[] all_parents;
-    delete[] new_all_parents;
-    delete [] distribution;
-    delete [] performance_list;
+    delete [] circuit_child1;
+    delete [] circuit_child2;
 
 }

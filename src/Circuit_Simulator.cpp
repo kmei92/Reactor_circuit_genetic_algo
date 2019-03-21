@@ -23,22 +23,33 @@ double Evaluate_Circuit(int *circuit_vector, double tolerance, int max_iteration
 
   // set up connection numbers
   int cnt = 0;
+  int conc_index, tail_index;
   for (int i = 1; i < 2 * num_units + 1; i += 2)
   {
+    conc_index = circuit_vector[i];
+    tail_index = circuit_vector[i + 1];
     //index to outflow
-    circuit[cnt].conc_num = circuit_vector[i];
-    circuit[cnt].tails_num = circuit_vector[i + 1];
+    //circuit[cnt].conc_num = circuit_vector[i];
+    //circuit[cnt].tails_num = circuit_vector[i + 1];
+
+    circuit[cnt].conc_num = conc_index;
+    circuit[cnt].tails_num = tail_index;
 
     //counts feeds of outflow unit
-    circuit[circuit[cnt].conc_num].conc_count++;
-    circuit[circuit[cnt].tails_num].tail_count++;
+    //circuit[circuit[cnt].conc_num].conc_count++;
+    //circuit[circuit[cnt].tails_num].tail_count++;
+
+    circuit[conc_index].conc_count++;
+    circuit[tail_index].tail_count++;
 
     //add unit 'cnt' to vector of feeds of outflow unit
-    circuit[circuit[cnt].conc_num].conc_inlets.push_back(cnt);
-    circuit[circuit[cnt].tails_num].tails_inlets.push_back(cnt);
+    //circuit[circuit[cnt].conc_num].conc_inlets.push_back(cnt);
+    //circuit[circuit[cnt].tails_num].tails_inlets.push_back(cnt);
+
+    circuit[conc_index].conc_inlets.push_back(cnt);
+    circuit[tail_index].tails_inlets.push_back(cnt);
     cnt++;
   }
-
 
   // set up the recycle inlets
   for (int i = 0; i < num_units + 2; i++)

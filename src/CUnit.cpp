@@ -1,16 +1,15 @@
 #include "CUnit.h"
 
 CUnit::CUnit() {
+    conc_count = 0;
+    tail_count = 0;
 	for (int i = 0; i < 2; i++)
 	{
 		top[i] = 0;
 		bottom[i] = 0;
 		feed[i] = 0;
 		old_feed[i] = 0;
-		conc_count = 0;
-		tail_count = 0;
 	}
-
 	mark = false;
 };
 
