@@ -1,6 +1,7 @@
 
 #include "CCircuit.h"
 
+
 #ifndef GENETIC_ALGORITHM_H
 #define GENETIC_ALGORITHM_H
 
@@ -19,6 +20,7 @@ void select_parent(int &tgt_parent_index_1, int &tgt_parent_index_2, double *dis
  */
 bool RollingDice(double crossover_rate = 0.9);
 
+
 /*
  * Check each value in the vector to find whether it should do mutation
  */
@@ -32,10 +34,17 @@ void swapping_parent(int **all_parents, int **new_all_parents, int num_parents, 
 
 
 /*
+* Checking convergence function on the parallel function
+*/
+bool Check_Convergence(double expected_performance, double performance, double tol, int steps, int max_steps);
+
+
+/*
  * The main function to run genetic algorithm
  */
 void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *performance_list, double *distribution, int num_parents, int num_units, int max_steps,
         double gene_change_rate = 0.01, double crossover_rate = 0.9);
+
 
 
 #endif //GENETIC_ALGORITHM_H

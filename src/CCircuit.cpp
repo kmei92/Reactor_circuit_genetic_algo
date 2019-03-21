@@ -1,8 +1,9 @@
 #include <vector>
 #include <iostream>
 #include <stdio.h>
-#include <CUnit.h>
-#include <CCircuit.h>
+#include "../includes/CUnit.h"
+#include "../includes/CCircuit.h"
+
 
 std::vector<CUnit> units(num_units_all);
 int feed_num;
@@ -29,7 +30,7 @@ bool Check_Validity(int *circuit_vector)
 
         // Criterion 3 and Criterion 4
         if (circuit_vector[i] == i/2 ||circuit_vector[i+1] == i/2 || circuit_vector[i] == circuit_vector[i+1]){
-            //std::cout <<" Criterion 3 and Criterion 4 fail!"<< std::endl;
+           // std::cout <<" Criterion 3 and Criterion 4 fail!"<< std::endl;
             return false;
         }
 

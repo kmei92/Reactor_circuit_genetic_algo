@@ -7,33 +7,46 @@
 #include <fstream>
 #include <ctime>
 #include <vector>
-#include "Genetic_Algorithm.h"
-#include "Circuit_Simulator.h"
+#include "../includes/Genetic_Algorithm.h" 
+#include "../includes/Circuit_Simulator.h"
 
 using namespace std;
 
-// Find the max and min value as well as the index of performance
-void find_max_min(double *performance_list, int num_parents, int &max_index, int &min_index){
 
-    double min_value = performance_list[0];
-    double max_value = performance_list[0];
-    max_index = 0;
-    min_index = 0;
-
-    for (int i = 1; i < num_parents; i++){
-        if (performance_list[i] > max_value){
-            max_value = performance_list[i];
-            max_index = i;
-        }
-
-        if (performance_list[i] < min_value){
-            min_value = performance_list[i];
-            min_index = i;
-        }
-    }
-
+bool Check_Convergence(double expected_performance, double performance, double tol, int steps, int max_steps)
+{
+	bool has_converged = false;
+	double difference = performance - expected_performance;
+	if (difference < 0) { difference = -1.0 * difference; }
+	if (difference < tol && steps > max_steps)
+	{
+		has_converged = true;
+	}
+	return has_converged;
 }
 
+// Find the max and min value as well as the index of performance
+void find_max_min(double *performance_list, int num_parents, int &max_index, int &min_index) {
+
+
+	double min_value = performance_list[0];
+	double max_value = performance_list[0];
+	max_index = 0;
+	min_index = 0;
+
+	for (int i = 1; i < num_parents; i++) {
+		if (performance_list[i] > max_value) {
+			max_value = performance_list[i];
+			max_index = i;
+		}
+
+		if (performance_list[i] < min_value) {
+			min_value = performance_list[i];
+			min_index = i;
+		}
+	}
+
+}
 
 void select_parent(int &tgt_parent_index_1, int &tgt_parent_index_2, double *distribution, int num_parents){
     double pt1, pt2;
@@ -83,19 +96,20 @@ void mutation(int *circuit_vector, double gene_change_rate){
             }
         }
     }
+
 }
 
 
 // swap the the old and new parents
-void swapping_parent(int **all_parents, int **new_all_parents, int num_parents, int length){
-    for (int i = 0; i < num_parents; i++){
-        for (int j = 0; j < length; j++){
-            int tmp;
-            tmp = all_parents[i][j];
-            all_parents[i][j] = new_all_parents[i][j];
-            new_all_parents[i][j] = tmp;
-        }
-    }
+void swapping_parent(int **all_parents, int **new_all_parents, int num_parents, int length) {
+	for (int i = 0; i < num_parents; i++) {
+		for (int j = 0; j < length; j++) {
+			int tmp;
+			tmp = all_parents[i][j];
+			all_parents[i][j] = new_all_parents[i][j];
+			new_all_parents[i][j] = tmp;
+		}
+	}
 }
 
 // Main function
@@ -302,5 +316,4 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
 
     delete [] circuit_child1;
     delete [] circuit_child2;
-
 }
