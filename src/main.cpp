@@ -300,7 +300,7 @@ double t1 = clock();
     run_genetic_algorithm(all_parents, new_all_parents, performance_list, distribution, num_parents, num_units);
 	double t2 = clock();
 	cout << "Time used: " << (t2 - t1) / CLOCKS_PER_SEC << " s " << endl;
-	system("pause");
+	//system("pause");
 }
 
 

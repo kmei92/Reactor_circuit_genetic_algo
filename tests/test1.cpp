@@ -1,6 +1,7 @@
 #include <iostream>
 #include "CUnit.h"
 #include "CCircuit.h"
+#include "Genetic_Algorithm.h"
 
 
 
@@ -15,6 +16,9 @@ int main(int argc, char * argv[]){
 	    std::cout  << "pass\n";
 	else
 	    std::cout << "fail\n";
+
+
+		run_genetic_algorithm(all_parents, new_all_parents, performance_list, distribution, num_parents, num_units);
 
 
 
