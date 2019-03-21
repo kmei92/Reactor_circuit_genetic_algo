@@ -15,9 +15,9 @@ public:
 
     double feed[2];
     double old_feed[2];
-    vector<int> conc_inlets;
-    vector<int> tails_inlets;
-    int conc_count, tail_count;
+    //vector<int> conc_inlets;
+    //vector<int> tails_inlets;
+    //int conc_count, tail_count;
 
     CUnit();
     ~CUnit();

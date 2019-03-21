@@ -88,6 +88,7 @@ void mutation(int *circuit_vector, double gene_change_rate){
     }
 }
 
+
 // swap the the old and new parents
 void swapping_parent(int **all_parents, int **new_all_parents, int num_parents, int length){
     for (int i = 0; i < num_parents; i++){
@@ -120,7 +121,7 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
     int max_index, min_index; // the index of the best performance one
     double exp_performance = 10000.0; // expected performance
     // max iteration steps
-    double best_performance;      // best performance in one generation
+    double best_performance = 0.0;      // best performance in one generation
     double worst_performance;
     double tol = 0.1;             // a small value to make sure even the worst one has the right to reproduce
     int steps = 0;
@@ -144,7 +145,7 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
         t1 = clock();
         for (int i = 0; i < num_parents; i++){
             //performance_list[i] = UpdateFunction(all_parents[i], length);
-            performance_list[i] = Evaluate_Circuit(all_parents[i], 0.0001, 30, num_units, 10, 100, 100.0, 500.0);
+            performance_list[i] = Evaluate_Circuit(all_parents[i], 1e-6, 500, num_units, 10, 100, 100.0, 500.0);
             //cout << "i  " << i << endl;
         }
         t2 = clock();
@@ -301,7 +302,7 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
         }
         swapping_parent(all_parents, new_all_parents, num_parents, length);
         steps++;
-        //cout << "step " << steps<< endl;
+        cout << "step " << steps<< " best performance " << best_performance << endl;
 
     }
 

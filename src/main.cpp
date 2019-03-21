@@ -17,11 +17,10 @@
 
 using namespace std;
 
-
 int **all_parents;
 int **new_all_parents;
 int num_parents = 100;
-int max_steps = 1000;
+int max_steps = 10000;
 double gene_change_rate = 0.01;
 double crossover_rate = 0.9;
 
@@ -113,6 +112,28 @@ int main(int argc, char *argv[]) {
     delete [] new_all_parents;
     delete [] distribution;
     delete [] performance_list;
+
+
+    /*
+    int test[num_units * 2 + 1];
+    string STRING;
+    ifstream infile;
+    infile.open ("../data.txt");
+    while(!infile.eof()) // To get you all the lines.
+    {
+        getline(infile, STRING); // Saves the line in STRING.
+
+        cout << stoi(STRING); // Prints our STRING.
+    }
+    infile.close();
+
+    for (int i; i < num_units * 2 + 1; i++){
+        test[i] =
+    }
+     */
+
+
+
 
 }
 
