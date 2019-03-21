@@ -1,3 +1,4 @@
+
 #include "CCircuit.h"
 
 #ifndef GENETIC_ALGORITHM_H
@@ -38,3 +39,4 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
 
 
 #endif //GENETIC_ALGORITHM_H
+

@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <string>
-#include <cmath>
 #include <ctime>
 #include <cstdlib>
 #include <algorithm>
