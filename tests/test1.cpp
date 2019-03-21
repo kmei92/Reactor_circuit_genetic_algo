@@ -135,7 +135,7 @@ int main(int argc, char *argv[]) {
 	double end = clock();
 	cout << "Time used: " << (end - start) / CLOCKS_PER_SEC << endl;
 
-	
+
 
 	for (int i = 0; i < num_parents; i++) {
 		delete[] all_parents[i];
@@ -146,21 +146,22 @@ int main(int argc, char *argv[]) {
 	delete[] distribution;
 	delete[] performance_list;
 
-	ifstream myfile;
-	myfile.open("../data.txt");
-	int output[num_units];
-	if (myfile.is_open()) {
-		while (!myfile.eof()) {
 
 
-			myfile >> output;
-			cout << output;
+
+	int a[21];
+	fstream in("../data.txt");
+	cin.rdbuf(in.rdbuf());
+	for (int i = 0; i < 21; i++)
+		cin >> a[i];
+	if (Check_Validity(a))
+		std::cout << "pass\n";
+	else
+		std::cout << "fail\n";
 
 
-		}
-	}
-	myfile.close();
-	
+
+
 
 
 
