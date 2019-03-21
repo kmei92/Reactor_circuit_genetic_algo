@@ -1,0 +1,36 @@
+No parameter is varied.
+Number of runs (per variation): 10
+Max steps: 1000
+Max steps since no change: 100
+Tolerance: 0.0001
+steps until convergence: 259, best performance: 137.173
+best vector: 
+3 4 8 2 6 10 4 4 7 2 1 3 11 2 3 4 0 1 9 6 5 
+steps until convergence: 128, best performance: 135.616
+best vector: 
+2 5 3 9 11 5 0 8 4 7 1 6 8 10 5 6 9 6 7 6 2 
+steps until convergence: 159, best performance: 137.173
+best vector: 
+3 6 5 3 11 7 8 7 9 5 1 6 3 10 7 6 0 0 4 7 2 
+steps until convergence: 146, best performance: 97.3126
+best vector: 
+5 9 8 3 0 7 5 6 9 6 10 3 1 4 7 10 3 9 11 7 2 
+steps until convergence: 144, best performance: 132.123
+best vector: 
+0 6 8 4 9 3 0 10 6 5 2 10 3 5 4 2 11 6 1 2 7 
+steps until convergence: 140, best performance: 113.779
+best vector: 
+5 9 2 9 6 1 4 2 11 1 5 0 7 10 0 0 8 2 3 10 1 
+steps until convergence: 196, best performance: 132.123
+best vector: 
+1 6 9 8 5 10 8 9 4 9 11 8 7 10 2 0 3 6 0 2 1 
+steps until convergence: 106, best performance: 75.8366
+best vector: 
+8 4 1 4 0 5 9 5 2 3 7 10 11 3 4 2 8 9 1 3 6 
+steps until convergence: 81, best performance: 113.962
+best vector: 
+1 8 3 4 5 6 1 11 4 6 9 4 7 8 0 9 5 10 6 6 2 
+steps until convergence: 104, best performance: 154.491
+best vector: 
+3 10 2 5 7 11 5 1 4 1 3 9 1 10 0 5 8 5 4 10 6 
+Average number of steps: 146.3

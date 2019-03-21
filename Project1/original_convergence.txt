@@ -1,0 +1,20 @@
+No parameter is varied.
+Number of runs (per variation): 10
+Max steps: 10000
+Max steps since no change: 2000
+Tolerance: 0.0001
+No parameter is varied.
+Number of runs (per variation): 10
+Max steps: 1000
+Max steps since no change: 500
+Tolerance: 0.0001
+No parameter is varied.
+Number of runs (per variation): 10
+Max steps: 100
+Max steps since no change: 50
+Tolerance: 0.0001
+No parameter is varied.
+Number of runs (per variation): 10
+Max steps: 100
+Max steps since no change: 50
+Tolerance: 0.0001

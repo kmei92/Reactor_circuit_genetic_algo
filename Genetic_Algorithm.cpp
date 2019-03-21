@@ -3,14 +3,10 @@
 #include <math.h>
 #include <iostream>
 
-#include "CStream.h"
 #include "CUnit.h"
-#include "CCircuit.h"
-#include "Genetic_Algorithm.h"
 
-#include <iostream>
-#include <math.h>
-#include "CUnit.h"
+#include "Genetic_Algorithm.h"
+#include "CCircuit.h"
 
 double relative_change(double a, double b, double c, double d)
 {

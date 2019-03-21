@@ -3,9 +3,9 @@
 #include <math.h>
 #include <iostream>
 
-#include "../includes/CCircuit.h"
-#include "../includes/CUnit.h"
-#include "../includes/Genetic_Algorithm.h"
+#include "CCircuit.h"
+#include "CUnit.h"
+#include "Genetic_Algorithm.h"
 
 
 double relative_change(double a, double b, double c, double d)

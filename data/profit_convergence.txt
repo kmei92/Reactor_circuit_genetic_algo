@@ -1,0 +1,6 @@
+The profit is varied.
+Number of runs (per variation): 10
+Max steps: 1000
+Max steps since no change: 100
+Tolerance: 0.0001
+varying parameter value: 0
