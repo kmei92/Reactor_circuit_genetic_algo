@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string>
 #include <cmath>
 #include <ctime>
 #include <cstdlib>
@@ -36,6 +37,7 @@ void find_max_min(double *performance_list, int num_parents, int &max_index, int
 
 }
 
+
 void select_parent(int &tgt_parent_index_1, int &tgt_parent_index_2, double *distribution, int num_parents){
     double pt1, pt2;
 
@@ -43,8 +45,6 @@ void select_parent(int &tgt_parent_index_1, int &tgt_parent_index_2, double *dis
         // Generate 2 random double value between 0 and max value in distribution
         pt1 = ((double)rand()/RAND_MAX) * distribution[num_parents];
         pt2 = ((double)rand()/RAND_MAX) * distribution[num_parents];
-        //pt1 = rand() % int(distribution[num_parents]);
-        //pt2 = rand() % int(distribution[num_parents]);
 
     }while(pt1 == pt2);
 
@@ -101,7 +101,7 @@ void swapping_parent(int **all_parents, int **new_all_parents, int num_parents, 
     }
 }
 
-
+// Main function
 void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *performance_list, double *distribution, int num_parents, int num_units, int max_steps,
                            double gene_change_rate, double crossover_rate){
 
@@ -120,9 +120,8 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
 
     int max_index, min_index; // the index of the best performance one
     double exp_performance = 10000.0; // expected performance
-    // max iteration steps
     double best_performance = 0.0;      // best performance in one generation
-    double worst_performance;
+    double worst_performance;      // worst performance in one generation
     double tol = 0.1;             // a small value to make sure even the worst one has the right to reproduce
     int steps = 0;
 
@@ -133,7 +132,13 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
 
 
     ofstream performance_output;
-    performance_output.open("../performance_list.txt");
+
+    stringstream fname;
+
+
+    fname << "../performance_list"<< "_" << std::to_string(num_units) << "_" << std::to_string(max_steps) << "_gcr"<< std::to_string(int(gene_change_rate * 100))+"_cr" + std::to_string(int(crossover_rate * 100))<< ".txt";
+
+    performance_output.open(fname.str().c_str());
 
     // Out loop
     while(best_performance < exp_performance && steps < max_steps) {
@@ -144,20 +149,12 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
         //---------------------------
         t1 = clock();
         for (int i = 0; i < num_parents; i++){
-            //performance_list[i] = UpdateFunction(all_parents[i], length);
+            //the circuit simulator
             performance_list[i] = Evaluate_Circuit(all_parents[i], 1e-6, 500, num_units, 10, 100, 100.0, 500.0);
-            //cout << "i  " << i << endl;
         }
         t2 = clock();
 
         t_sum += (t2 - t1)/CLOCKS_PER_SEC;
-        /*
-        cout << "Performance: ";
-        for (int i =0 ;i < num_parents; i++){
-            cout << performance_list[i] << " ";
-        }
-        cout << endl;
-         */
 
         // Evaluate the performance
         // find the max and min value
@@ -211,41 +208,6 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
             pair[0] = all_parents[tgt_parent_index_1];
             pair[1] = all_parents[tgt_parent_index_2];
 
-            /*
-                //-------------------------------------------
-                // Old and more compact method
-                //-------------------------------------------
-
-                // Do cross over and Mutation
-                for (int i = 0; i < length; i++) {
-                    if (i < pt) {
-                        new_all_parents[count][i] = pair[0][i];
-                        // Decide whether put to mutation
-                        if (RollingDice()) {
-                            // Do mutation
-                            mutation(count, i);
-                        }
-                    }
-                    else {
-                        new_all_parents[count][i] = pair[1][i];
-                        if (RollingDice()) {
-                            // Do mutation
-                            mutation(count, i);
-                        }
-                    }
-                }
-
-                //Check
-                //-----------------------
-                // check validity here
-                // if true count ++
-                // if false continue without count ++
-                //-----------------------
-                if (Check_Validity(new_all_parents[count])) {
-                    count++;
-                }
-
-                */
             //----------------------------------------------
             // Check whether to do the crossover
                 if (RollingDice()) {
@@ -308,8 +270,15 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
 
     performance_output << endl;
     performance_output.close();
+
+
     ofstream final_vec;
-    final_vec.open("../data.txt");
+
+    stringstream fname_vec;
+
+    fname_vec << "../final_vec"<< "_" << std::to_string(num_units) << "_" << std::to_string(max_steps) << "_gcr"<< std::to_string(int(gene_change_rate * 100))+"_cr" + std::to_string(int(crossover_rate * 100))<<".txt";
+
+    final_vec.open(fname.str().c_str());
 
     cout << "simulation function time used: " << t_sum << endl;
     cout << "best performance: "<< best_performance << endl;
@@ -320,7 +289,6 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
     }
     cout << endl;
     final_vec.close();
-
 
     delete [] circuit_child1;
     delete [] circuit_child2;

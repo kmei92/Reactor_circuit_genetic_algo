@@ -1,8 +1,6 @@
 #include "CUnit.h"
 
 CUnit::CUnit() {
-    //conc_count = 0;
-    //tail_count = 0;
 	for (int i = 0; i < 2; i++)
 	{
 		top[i] = 0;
@@ -14,8 +12,7 @@ CUnit::CUnit() {
 };
 
 CUnit::~CUnit() {
-	//conc_inlets.clear();
-	//tails_inlets.clear();
+
 };
 
 void CUnit::calc_stream() {

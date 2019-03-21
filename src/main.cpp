@@ -27,23 +27,6 @@ double crossover_rate = 0.9;
 double *performance_list;
 double *distribution;
 
-/*
-
-double UpdateFunction(int *vec, int size){
-    int sum = 0;
-    double std, avg;
-    for (int i = 0; i < size; i++){
-        sum += vec[i];
-    }
-    avg = sum / size;
-    for (int i = 0; i < size; i++){
-        std += pow(abs(vec[i] - avg), 2.0);
-    }
-    std = pow(std, 0.5);
-    return std;
-}
- */
-
 
 int main(int argc, char *argv[]) {
 
@@ -93,7 +76,6 @@ int main(int argc, char *argv[]) {
     }
     //------------------------------------------
 
-
     //------------------------------------------
     // Run the GA with circuit simulation
     //------------------------------------------
@@ -112,27 +94,6 @@ int main(int argc, char *argv[]) {
     delete [] new_all_parents;
     delete [] distribution;
     delete [] performance_list;
-
-
-    /*
-    int test[num_units * 2 + 1];
-    string STRING;
-    ifstream infile;
-    infile.open ("../data.txt");
-    while(!infile.eof()) // To get you all the lines.
-    {
-        getline(infile, STRING); // Saves the line in STRING.
-
-        cout << stoi(STRING); // Prints our STRING.
-    }
-    infile.close();
-
-    for (int i; i < num_units * 2 + 1; i++){
-        test[i] =
-    }
-     */
-
-
 
 
 }

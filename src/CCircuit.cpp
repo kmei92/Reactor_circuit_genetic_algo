@@ -15,11 +15,7 @@ bool Check_Validity(int *circuit_vector)
         units[i/2].mark = false;
     }
     feed_num = circuit_vector[0];
-    /*
-    for (int i=0; i < num_units; i++)
-        units[i].mark = false;
-        */
-   //std::cout <<"feed_num"<< feed_num << std::endl;
+
     mark_units(feed_num);
     // Criterion 1
     for (int i = 0; i < num_units; i++) {
@@ -66,7 +62,6 @@ void mark_units(int unit_num) {
     if (units[unit_num].conc_num<num_units) {
         mark_units(units[unit_num].conc_num);
     } else {
-        // ...Potentially do something to indicate that you have seen an exit
         //std::cout << " See the top! " << std::endl;
         units[units[unit_num].conc_num].mark = true;
     }
@@ -75,7 +70,6 @@ void mark_units(int unit_num) {
     if (units[unit_num].tails_num<num_units) {
         mark_units(units[unit_num].tails_num);
     } else {
-        // ...Potentially do something to indicate that you have seen an exit
         //std::cout << " See the bottom!" << std::endl;
         units[units[unit_num].tails_num].mark = true;
     }
