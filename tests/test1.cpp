@@ -149,10 +149,10 @@ int main(int argc, char *argv[]) {
 
 
 
-	int a[21];
+	int a[num_units * 2 + 1];
 	fstream in("../data.txt");
 	cin.rdbuf(in.rdbuf());
-	for (int i = 0; i < 21; i++)
+	for (int i = 0; i < (num_units * 2 + 1); i++)
 		cin >> a[i];
 	if (Check_Validity(a))
 		std::cout << "pass\n";
