@@ -7,16 +7,12 @@ CUnit::CUnit() {
 		bottom[i] = 0;
 		feed[i] = 0;
 		old_feed[i] = 0;
-		conc_count = 0;
-		tail_count = 0;
 	}
-
 	mark = false;
 };
 
 CUnit::~CUnit() {
-	conc_inlets.clear();
-	tails_inlets.clear();
+
 };
 
 void CUnit::calc_stream() {
