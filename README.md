@@ -1,5 +1,5 @@
-# acse-4-project-3-platinum
-acse-4-project-3-platinum created by GitHub Classroom
+# Team Platinum - Optimal Mineral Recovery Using Genetic Algorithms
+Applied Computational Science and Engineering (ACSE-4): Group Project 3
 
 #Minutes for Monday Meeting
 
