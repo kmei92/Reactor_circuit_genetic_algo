@@ -1,8 +1,6 @@
 #include "CCircuit.h"
 
-<<<<<<< HEAD
-double Evaluate_Circuit(int *circuit_vector, double tolerance, int max_iterations, int num_units, double conc, double waste, double profit, double cost);
-=======
+
 #ifndef GENETIC_ALGORITHM_H
 #define GENETIC_ALGORITHM_H
 
@@ -13,14 +11,15 @@ void select_parent(int &tgt_parent_index_1, int &tgt_parent_index_2, double *dis
 
 bool RollingDice(double crossover_rate = 0.9);
 
-void mutation(int i, int &current_value, double gene_change_rate = 0.01);
+void mutation(int *circuit_vector, double gene_change_rate = 0.01);
 
 void swapping_parent(int **all_parents, int **new_all_parents, int num_parents, int length);
 
-void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *performance_list, double *distribution, int num_parents, int num_units,
+void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *performance_list, double *distribution, int num_parents, int num_units, int max_steps,
         double gene_change_rate = 0.01, double crossover_rate = 0.9);
 
+bool Check_Convergence(double expected_performance, double old_best_performance, double new_performance, double tol, int steps, int &initial_step_since_no_change, int max_steps);
 
 
 #endif //GENETIC_ALGORITHM_H
->>>>>>> f1753c5803f780c81477a461d83e1e06ed42a8e0
+
