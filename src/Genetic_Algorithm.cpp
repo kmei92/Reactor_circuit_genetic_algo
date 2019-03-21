@@ -391,16 +391,12 @@
 
 using namespace std;
 
-bool Check_Convergence(double expected_performance, double old_best_performance, double best_performance, double tol, int steps, int &initial_step_since_no_change, int max_steps)
+bool Check_Convergence(double expected_performance, double performance, double tol, int steps, int max_steps)
 {
 	bool has_converged = false;
-	if (abs(best_performance - expected_performance) < tol && steps < max_steps)
+	if (abs(performance - expected_performance) < tol && steps > max_steps)
 	{
 		has_converged = true;
-	}
-	else
-	{
-		initial_step_since_no_change = steps;
 	}
 	return has_converged;
 }

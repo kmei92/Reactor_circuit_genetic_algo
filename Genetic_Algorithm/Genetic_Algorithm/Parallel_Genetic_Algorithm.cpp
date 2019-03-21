@@ -20,7 +20,7 @@ Cmatrix new_all_parents;
 double *performance_list;
 double *distribution;
 int *null_list;
-bool write_to_file = false;
+bool write_to_file = true;
 
 double simu_tol = 0.00001;
 int sim_iter = 500;
@@ -29,7 +29,7 @@ int waste = 100;
 double profit = 100.0;
 double cost = 500.0;
 
-double cnvrg_tol = 5e-1;
+double cnvrg_tol = 1.0;
 
 
 // Function to split processors into evenly divided tasks
@@ -274,10 +274,11 @@ int main(int argc, char *argv[])
 			// Now that the all_parents have been repopulated with new parents, check if the solution has converged 
 			double new_performance = Evaluate_Circuit(all_parents.data[0], simu_tol, sim_iter, num_units, germanium, waste, profit, cost);
 			double old_performance = Evaluate_Circuit(new_all_parents.data[0], simu_tol, sim_iter, num_units, germanium, waste, profit, cost);
-			
+			cout << new_performance << endl;
 			// check if we have arrived at the expected performance value
-			has_converged = Check_Convergence(expected_performance, old_performance, new_performance, cnvrg_tol, steps, initial_steps_since_no_change, max_steps);
-
+			has_converged = Check_Convergence(expected_performance, new_performance, cnvrg_tol, steps, max_steps);
+			cout << has_converged << endl;
+			cout << steps << endl;
 			if (has_converged) // tell other processors to stop
 			{
 				for (int i = 1; i < p; i++)
