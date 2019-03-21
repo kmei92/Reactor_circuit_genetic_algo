@@ -136,7 +136,7 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
     stringstream fname;
 
 
-    fname << "../performance_list"<< "_" << to_string(num_units) << "_" << to_string(max_steps) << "_gcr"<< to_string(int(gene_change_rate * 100))+"_cr" + to_string(int(crossover_rate * 100))<< ".txt";
+    fname << "../performance_list"<< "_" << num_units << "_" << max_steps << "_gcr"<< gene_change_rate << "_cr" << crossover_rate << ".txt";
 
     performance_output.open(fname.str().c_str());
 
@@ -276,7 +276,7 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
 
     stringstream fname_vec;
 
-    fname_vec << "../final_vec"<< "_" << to_string(num_units) << "_" << to_string(max_steps) << "_gcr"<< to_string(int(gene_change_rate * 100))+"_cr" + to_string(int(crossover_rate * 100))<<".txt";
+    fname_vec << "../final_vec"<< "_" << num_units << "_" << max_steps << "_gcr"<< gene_change_rate <<"_cr" << crossover_rate <<".txt";
 
     final_vec.open(fname.str().c_str());
 
