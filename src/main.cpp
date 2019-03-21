@@ -1,9 +1,4 @@
 #include <stdio.h>
-<<<<<<< HEAD
-#include "../includes/CUnit.h"
-#include "../includes/CCircuit.h"
-
-=======
 #include <cmath>
 #include <ctime>
 #include <cstdlib>
@@ -15,10 +10,10 @@
 #include <ctime>
 #include <vector>
 
-#include "Circuit_Simulator.h"
-#include "Genetic_Algorithm.h"
-#include "CCircuit.h"
-#include "CUnit.h"
+#include "../includes/Circuit_Simulator.h"
+#include "../includes/Genetic_Algorithm.h"
+#include "../includes/CCircuit.h"
+#include "../includes/CUnit.h"
 
 using namespace std;
 
@@ -137,7 +132,6 @@ int main(int argc, char *argv[]) {
             cout << performance_list[i] << " ";
         }
         cout << endl;
->>>>>>> f1753c5803f780c81477a461d83e1e06ed42a8e0
 
         // Evaluate the performance
         // find the max and min value
@@ -303,7 +297,7 @@ int main(int argc, char *argv[]) {
     delete [] performance_list;
     */
     run_genetic_algorithm(all_parents, new_all_parents, performance_list, distribution, num_parents, num_units);
-
+	system("pause");
 }
 
 
