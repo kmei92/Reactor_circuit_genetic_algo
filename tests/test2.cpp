@@ -4,6 +4,7 @@
 #include "CUnit.h"
 #include "CCircuit.h"
 #include "Genetic_Algorithm.h"
+#include "Circuit_Simulator.h"
 
 int main(int argc, char * argv[])
 {
@@ -27,5 +28,37 @@ int main(int argc, char * argv[])
       else
 	        std::cout << "fail";
 			*/
+	  int **all_parents;
+	  int **new_all_parents;
+	  int num_parents = 100;
+	  double gene_change_rate = 0.01;
+	  double crossover_rate = 0.9;
+
+	  double *performance_list;
+	  double *distribution;
+
+	  for (int i = 0; i < num_parents; i++) {
+		  if (flag_right) {
+			  all_parents[i] = new int[2 * num_units + 1];
+			  new_all_parents[i] = new int[2 * num_units + 1];
+		  }
+		  all_parents[i][0] = rand() % num_units;
+
+		  for (int j = 1; j < 2 * num_units + 1; j += 2) {
+			  int index = j / 2;
+			  int top = rand() % (num_units + 2);
+			  int bot = rand() % (num_units + 2);
+			  while (top == index || bot == index || top == bot) {
+				  top = rand() % (num_units + 2);
+				  bot = rand() % (num_units + 2);
+			  }
+			  all_parents[i][j] = top;
+			  all_parents[i][j + 1] = bot;
+			  //cout << all_parents[i][j]  << " "<< all_parents[i][j + 1]<< " ";
+		  }
+	  }
+
+
+	  run_genetic_algorithm(all_parents, new_all_parents, performance_list, distribution, num_parents, num_units);
 	
 }
