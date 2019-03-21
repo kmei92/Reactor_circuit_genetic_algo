@@ -290,6 +290,19 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
     cout << endl;
     final_vec.close();
 
+
+    //---------------
+    // output for test
+    ofstream testData;
+    testData.open("../data.txt");
+    for (int i = 0; i < length; i++){
+        testData << all_parents[max_index][i] << " ";
+    }
+    testData.close();
+
+
+    //-------------
+
     delete [] circuit_child1;
     delete [] circuit_child2;
 
