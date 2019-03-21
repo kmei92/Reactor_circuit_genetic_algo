@@ -49,16 +49,16 @@ int get_num_parents(int counter, int counts, bool num_parents_const, std::ofstre
 	{
 		switch (counter)
 		{
-		case(0): {num_parents = 25; break; };
-		case(1): {num_parents = 50; break; };
-		case(2): {num_parents = 75; break; };
-		case(3): {num_parents = 100; break; };
-		case(4): {num_parents = 125; break; };
-		case(5): {num_parents = 150; break; };
-		case(6): {num_parents = 175; break; };
-		case(7): {num_parents = 200; break; };
-		case(8): {num_parents = 300; break; };
-		case(9): {num_parents = 400; break; };
+		case(0): {num_parents = 400; break; };
+		case(1): {num_parents = 300; break; };
+		case(2): {num_parents = 200; break; };
+		case(3): {num_parents = 175; break; };
+		case(4): {num_parents = 150; break; };
+		case(5): {num_parents = 125; break; };
+		case(6): {num_parents = 100; break; };
+		case(7): {num_parents = 75; break; };
+		case(8): {num_parents = 50; break; };
+		case(9): {num_parents = 25; break; };
 		}
 	}
 	else
@@ -205,12 +205,12 @@ int main(int argc, char *argv[])
 {
 	//input
 	///////////////////////////////////////////////////////
-	int max_steps_since_no_change = 200;	//how many maximum steps since no change before break?
-	int max_steps = 1000;					// max iteration steps before break?
-	int its = 3;							// run each variation how many times?
+	int max_steps_since_no_change = 2000;	//how many maximum steps since no change before break?
+	int max_steps = 10000;					// max iteration steps before break?
+	int its = 1;							// run each variation how many times?
 	int max_variation_step_number = 10;		// how many variations?
 
-	for (int j = 1; j < 2; j++)
+	for (int j = 0; j < 2; j++)
 	{
 		//leave which parameters constant?
 		bool num_parents_const = true;
@@ -315,8 +315,11 @@ int main(int argc, char *argv[])
 		convergence << "Max steps since no change: " << max_steps_since_no_change << std::endl;
 		convergence << "Tolerance: " << tolerance << std::endl;
 
+		int *best_vector = new int[2 * num_units + 1];
+
 		for (int variation_step = 0; variation_step < max_variation_steps; variation_step++)
 		{
+
 			for (int it = 0; it != its; it++)
 			{
 				int initial_step_since_no_change = 0;
@@ -341,8 +344,6 @@ int main(int argc, char *argv[])
 
 				double best_performance = 0.0;
 				int step = 0;
-
-				int *best_vector = new int[2 * num_units + 1];
 
 				//------------------------------------------
 				// Setup an initial race with all vectors valid
@@ -411,7 +412,9 @@ int main(int argc, char *argv[])
 				delete[] performance_list;
 				//--------------------------------------------------------
 
-				cout << "steps until convergence: " << step << ", best performance: " << best_performance << std::endl;
+				cout << step << ", " << best_performance << std::endl;
+				convergence << step << ", " << best_performance << std::endl;
+
 				cout << "best vector: " << std::endl;
 				for (int i = 0; i < 2 * num_units + 1; i++)
 				{
@@ -419,16 +422,9 @@ int main(int argc, char *argv[])
 				}
 				cout << std::endl;
 
-				convergence << "steps until convergence: " << step << ", best performance: " << best_performance << std::endl;
+				convergence << step << ", " << best_performance << std::endl;
 
-				convergence << "best vector: " << std::endl;
-				for (int i = 0; i < 2 * num_units + 1; i++)
-				{
-					convergence << best_vector[i] << " ";
-				}
-				convergence << std::endl;
-
-				delete[] best_vector;
+				
 
 				//std::cout << "Needed " << initial_step_since_no_change << " iterations, ";
 				//std::cout << "performance value: " << best_performance << std::endl;
@@ -443,17 +439,31 @@ int main(int argc, char *argv[])
 			}
 
 			avg[variation_step] = get_avg(&all_steps[0], its);
-			std::cout << "Average number of steps: " << avg[variation_step] << std::endl;
-			convergence << "Average number of steps: " << avg[variation_step] << std::endl;
+			std::cout << "avg " << avg[variation_step] << std::endl;
 		}
 
 		if (const_parameters == 6)
 		{
-			convergence << "Total avg: " << get_avg(&avg[0], max_variation_steps) << std::endl;
+			for (int i = 0; i < 2 * num_units + 1; i++)
+			{
+				convergence << avg[i] << std::endl;
+			}
+			convergence << "total avg " << get_avg(&avg[0], max_variation_steps) << std::endl;
+
+			cout << "best_vector " << std::endl;
+			for (int i = 0; i < 2 * num_units + 1; i++)
+			{
+				cout << best_vector[i] << " ";
+			}
+			cout << std::endl;
+
 		}
+
 		convergence.close();
+
 		delete[] avg;
 		delete[] all_steps;
+		delete[] best_vector;
 	}
 	//system("pause");
 }

@@ -336,6 +336,11 @@ void run_genetic_algorithm(int **all_parents, int **new_all_parents, double *per
 		has_converged = Check_Convergence(old_best_performance, best_performance, tol, steps_since_no_change, steps, initial_step_since_no_change, max_steps_since_no_change);
 		old_best_performance = best_performance;
 
+		for (int i = 0; i < 2 * num_units + 1; i++)
+		{
+			best_vector[i] = all_parents[0][i];
+		}
+
 		steps++;
 		//cout << "step " << steps << " best performance " << best_performance << endl;
 
