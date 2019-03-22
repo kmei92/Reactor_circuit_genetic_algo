@@ -28,9 +28,7 @@ The following software and modules are required to be installed:
     -	Graphviz >= 1.0.0
 -	IPython Kernel (Included in Anaconda)
 
-Clone this repository to local folder
-
-Before compiling and running, choose one of two ways to allocate the source and header files:
+Clone this repository to local folder, choose one of two ways to allocate the source and header files before compiling and running:
 - Gather all source files in the src folder and header files in the includes folder from the cloned local repository and then put them inside the visual studio project folder which contains the .vcxproj file.
 - Gather all source files in the src folder and put them in the includes folder from the cloned local repository. 
 1.	Enter the visual studio project.
