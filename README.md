@@ -1,5 +1,6 @@
 # Team Platinum - Optimal Mineral Recovery Using Genetic Algorithms
 Applied Computational Science and Engineering (ACSE-4): Group Project 3
+Team Member: Yusuf Falola, Xianzheng Li, Keer Mei, Sanaz Salati, Mingrui Zhang
 
 ## **Synopsis**
 This project simulates the genetic algorithms with both serial and parallel programming, and achieves the optimal mineral recovery.
