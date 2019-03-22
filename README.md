@@ -19,7 +19,7 @@ The key outputs from the simulation program are:
 - Optimal circuit with diffrerent mutation rate and number of child vectors.
 - Optimal circuit with changing the cost to profit ratios.
 
-## **Structure**
+## **Flow Chart**
 
 ![code_stru](https://user-images.githubusercontent.com/43985789/54819223-1ce23100-4c93-11e9-8e6a-8b23a1fed12f.png)
 
