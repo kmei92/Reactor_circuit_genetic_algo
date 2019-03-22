@@ -109,31 +109,31 @@ Daily schedule:
 
 Timeline
 
-•	Genetic Algorithm code: Monday 
+- Genetic Algorithm code: Monday 
 
-•	Circuit simulation code: Tuesday 
+- Circuit simulation code: Tuesday 
 
-•	Validity checking function: Tuesday
+- Validity checking function: Tuesday
 
-•	Travis Testing functions: Wednesday
+- Travis Testing functions: Wednesday
 
-•	Measuring rate of convergence of original code? Wednesday
+- Measuring rate of convergence of original code? Wednesday
 
-•	Investigate how probability of crossing selected parents (0.8 – 1) affects rate of convergence. Wednesday
+- Investigate how probability of crossing selected parents (0.8 – 1) affects rate of convergence. Wednesday
 
-•	Investigate how rate at which mutations are introduced (<1% probability) affect rate of convergence. Thursday
+- Investigate how rate at which mutations are introduced (<1% probability) affect rate of convergence. Thursday
 
-•	Parallelisation using OpenMP: Thursday
+- Parallelisation using OpenMP: Thursday
 
-•	Rate of convergence affected by the number of child vectors used. Thursday
+- Rate of convergence affected by the number of child vectors used. Thursday
 
-•	Rate of convergence affected by mutation rate. Thursday
+- Rate of convergence affected by mutation rate. Thursday
 
-•	Code documentation and auto-documentation: Thursday
+- Code documentation and auto-documentation: Thursday
 
-•	Preparation of report and github readme file: Thursday
+- Preparation of report and github readme file: Thursday
 
-•	Preparation of slides and presentation: Friday
+- Preparation of slides and presentation: Friday
 
   # Contributors
 
