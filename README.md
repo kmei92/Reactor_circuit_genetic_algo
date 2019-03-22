@@ -92,12 +92,25 @@ Ensure that the project contains the above linkage before compiling and running.
 - This is the recursive function that enters a circuit vector and marks every separation unit if needed.
 
 ## **Output**
+### **Main Output**
 - Circuit Configuration with 5 units and iteration steps of 10000.
 ![unit_5](https://user-images.githubusercontent.com/43985789/54815379-bf95b200-4c89-11e9-8623-708931be99c1.PNG)
+
 - Circuit Configuration with 10 units and iteration steps of 10000.
 ![unit_10](https://user-images.githubusercontent.com/43985789/54815376-befd1b80-4c89-11e9-81d8-c03e859f7007.PNG)
+
 - Circuit Configuration with 15 units and iteration steps of 10000.
 ![Unit_15](https://user-images.githubusercontent.com/43985789/54815377-befd1b80-4c89-11e9-94c6-d3bb9268ebe2.PNG)
+
+### **Output with Same Price & Different Penalty Value**
+- Price is 100, Penalty is 200 (optimal circuit configuration)
+<img width="1334" alt="cost200" src="https://user-images.githubusercontent.com/43985789/54817018-bdcded80-4c8d-11e9-9957-bae29db8fa05.png">
+
+- Price is 100, Penalty is 0 (extreme condition for highest purity)
+<img width="1334" alt="cost0" src="https://user-images.githubusercontent.com/43985789/54817020-be668400-4c8d-11e9-8a7d-89971213512f.png">
+
+- Price is 100, Penalty is 5000 (extreme condition for most recycle times)
+<img width="1337" alt="cost5000" src="https://user-images.githubusercontent.com/43985789/54817021-be668400-4c8d-11e9-8ca6-4fa8ea263489.png">
 
 
 # Contributors
