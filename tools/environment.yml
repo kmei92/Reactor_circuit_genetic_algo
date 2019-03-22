@@ -1,4 +1,0 @@
-name: acse-4-p3
-dependencies:
- - graphviz
- - python-graphviz
