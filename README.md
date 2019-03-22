@@ -4,20 +4,24 @@ Applied Computational Science and Engineering (ACSE-4): Group Project 3
 Team Member: Yusuf Falola, Xianzheng Li, Keer Mei, Sanaz Salati, Mingrui Zhang
 
 ## **Synopsis**
-This project simulates the genetic algorithms with both serial and parallel programming, and achieves the optimal mineral recovery.
+This project implements a genetic algorithm with both serial and parallel programming, to obtain optimal circuit configurations for industrial separation units.
 
-The key parts of the simulation program are:
+The key components of the program are:
 
 - The Genetic Algorithm (including a defined fitness number calculation method)
 - Circuit Simulation (able to caculate the mass balance over all the units)
-- Circuit Validity (check if the curcuit is valid, and if the output result is converged)
+- Circuit Validity (checks if the curcuit is valid, and if the output result is converged)
 
 
 The key outputs from the simulation program are:
 
-- Optimal curcuit value (serial and parallel).
+- Optimal curcuit vector (serial and parallel).
 - Optimal circuit with diffrerent mutation rate and number of child vectors.
-- Optimal circuit with changing the penalty price to zero.
+- Optimal circuit with changing the cost to profit ratios.
+
+## **Structure**
+
+![code_stru](https://user-images.githubusercontent.com/43985789/54819223-1ce23100-4c93-11e9-8e6a-8b23a1fed12f.png)
 
 
 ## **Installation**
@@ -53,18 +57,18 @@ Ensure that the project contains the above linkage before compiling and running.
 
 ### **main():**
 
-- This is the main function which initilaizes the parameters and call the genetic algorithm, circuit simulator and check validity function.
+- This is the main function which initilaizes the parameters and call the genetic algorithm, circuit simulator and check validity functions.
 
-### **Genetic Algorithms:**
+### **Genetic Algorithms Functions:**
 
 **RollingDice():**
 
-- Randomly decide if the unit needs to do crossover
+- Randomly decides if the unit will crossover
 - Compare the random number with the initialized crossover rate, return true or false for crossover or not crossover
 
 **mutation():**
 
-- This function goes through a vector and randomly (based on the gene change rate) if each number inside the vector mutate to a different number
+- This function goes through a vector and randomly (based on the gene change rate) decides if each number inside the vector will mutate to a different number
 
 **swapping_parent():**
 
@@ -72,32 +76,51 @@ Ensure that the project contains the above linkage before compiling and running.
 
 **run_genetic_algorithm():**
 
-- This is the main genetic algorithm function that executes and produces the solution circuit value.
+- This is the main genetic algorithm function that executes and produces the solution circuit vector.
 
 ### **Circuit Simulation:**
 
 **Evaluate_Circuit():**
 
-- This is the evaluate circuit function. The result will be varied with changing the iteration times.
+- This is the evaluate circuit function.
 - It returns the performance (revenue) of a circuit vector.
 
 ### **Circuit Validity:**
 
 **Check_Validity():**
 
-- The function defined the conditions for a valid circuit value, any circuit cannot meet all the conditions will be markedd as an invalid circuit.
+- The function tests the conditions for a valid circuit. Any circuit that cannot meet all the conditions will be markedd as an invalid circuit.
 
 **Mark_Units():**
 
-- This is the recursive function that enters a circuit vector and marks every separation unit if needed.
+- This is a recursive function that enters a circuit vector and marks every separation unit if they are seen.
+
+**NOTE:** 
+- Full html auto-documentation, using doxygen, of the three cpp files can be found in the folders;
+- circuit_simulation_doc ---> _circuit__simulator_8cpp.html
+- Circuit_Validity_Doc ---> _c_circuit_8cpp.html
+- GA_documentation ---> html ---> _genetic_algorithm_8cpp.html
 
 ## **Output**
+### **Main Output**
 - Circuit Configuration with 5 units and iteration steps of 10000.
 ![unit_5](https://user-images.githubusercontent.com/43985789/54815379-bf95b200-4c89-11e9-8623-708931be99c1.PNG)
+
 - Circuit Configuration with 10 units and iteration steps of 10000.
 ![unit_10](https://user-images.githubusercontent.com/43985789/54815376-befd1b80-4c89-11e9-81d8-c03e859f7007.PNG)
+
 - Circuit Configuration with 15 units and iteration steps of 10000.
 ![Unit_15](https://user-images.githubusercontent.com/43985789/54815377-befd1b80-4c89-11e9-94c6-d3bb9268ebe2.PNG)
+
+### **Output with Same Price & Different Penalty Value**
+- Price is 100, Penalty is 200 (optimal circuit configuration)
+<img width="1334" alt="cost200" src="https://user-images.githubusercontent.com/43985789/54817018-bdcded80-4c8d-11e9-9957-bae29db8fa05.png">
+
+- Price is 100, Penalty is 0 (extreme condition for highest purity)
+<img width="1334" alt="cost0" src="https://user-images.githubusercontent.com/43985789/54817020-be668400-4c8d-11e9-8a7d-89971213512f.png">
+
+- Price is 100, Penalty is 5000 (extreme condition for most recycle times)
+<img width="1337" alt="cost5000" src="https://user-images.githubusercontent.com/43985789/54817021-be668400-4c8d-11e9-8ca6-4fa8ea263489.png">
 
 
 # Contributors
