@@ -93,18 +93,18 @@ Ensure that the project contains the above linkage before compiling and running.
 
 ## **Roadmap**
 
--	Group members divided into two groups 
+Group members divided into two groups 
 
-    -	Group Genetic Algorithm: Sanaz, keer and Ming
+- Group Genetic Algorithm: Sanaz, keer and Ming
 
-    -	Group Circuit Simulation: Yusuf, Sean and Michael
+- Group Circuit Simulation: Yusuf, Sean and Michael
 
 
--	Daily schedule:
+Daily schedule:
 
-    -	9am resumption
+- 9am resumption
 
-    -	12:30pm – 2pm lunch
+- 12:30pm – 2pm lunch
 
 
 Timeline
