@@ -1,7 +1,7 @@
 # Team Platinum - Optimal Mineral Recovery Using Genetic Algorithms
 Applied Computational Science and Engineering (ACSE-4): Group Project 3
 
-## **Synopis**
+## **Synopsis**
 This project simulates the genetic algorithms with both serial and parallel programming, and achieves the optimal mineral recovery.
 
 The key parts from the simulation program are:
