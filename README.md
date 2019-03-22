@@ -4,20 +4,20 @@ Applied Computational Science and Engineering (ACSE-4): Group Project 3
 Team Member: Yusuf Falola, Xianzheng Li, Keer Mei, Sanaz Salati, Mingrui Zhang
 
 ## **Synopsis**
-This project simulates the genetic algorithms with both serial and parallel programming, and achieves the optimal mineral recovery.
+This project implements a genetic algorithm with both serial and parallel programming, to obtain optimal circuit configurations for industrial separation units.
 
-The key parts of the simulation program are:
+The key components of the program are:
 
 - The Genetic Algorithm (including a defined fitness number calculation method)
 - Circuit Simulation (able to caculate the mass balance over all the units)
-- Circuit Validity (check if the curcuit is valid, and if the output result is converged)
+- Circuit Validity (checks if the curcuit is valid, and if the output result is converged)
 
 
 The key outputs from the simulation program are:
 
-- Optimal curcuit value (serial and parallel).
+- Optimal curcuit vector (serial and parallel).
 - Optimal circuit with diffrerent mutation rate and number of child vectors.
-- Optimal circuit with changing the penalty price to zero.
+- Optimal circuit with changing the cost to profit ratios.
 
 
 ## **Installation**
@@ -53,18 +53,18 @@ Ensure that the project contains the above linkage before compiling and running.
 
 ### **main():**
 
-- This is the main function which initilaizes the parameters and call the genetic algorithm, circuit simulator and check validity function.
+- This is the main function which initilaizes the parameters and call the genetic algorithm, circuit simulator and check validity functions.
 
-### **Genetic Algorithms:**
+### **Genetic Algorithms Functions:**
 
 **RollingDice():**
 
-- Randomly decide if the unit needs to do crossover
+- Randomly decides if the unit will crossover
 - Compare the random number with the initialized crossover rate, return true or false for crossover or not crossover
 
 **mutation():**
 
-- This function goes through a vector and randomly (based on the gene change rate) if each number inside the vector mutate to a different number
+- This function goes through a vector and randomly (based on the gene change rate) decides if each number inside the vector will mutate to a different number
 
 **swapping_parent():**
 
@@ -72,24 +72,30 @@ Ensure that the project contains the above linkage before compiling and running.
 
 **run_genetic_algorithm():**
 
-- This is the main genetic algorithm function that executes and produces the solution circuit value.
+- This is the main genetic algorithm function that executes and produces the solution circuit vector.
 
 ### **Circuit Simulation:**
 
 **Evaluate_Circuit():**
 
-- This is the evaluate circuit function. The result will be varied with changing the iteration times.
+- This is the evaluate circuit function.
 - It returns the performance (revenue) of a circuit vector.
 
 ### **Circuit Validity:**
 
 **Check_Validity():**
 
-- The function defined the conditions for a valid circuit value, any circuit cannot meet all the conditions will be markedd as an invalid circuit.
+- The function tests the conditions for a valid circuit. Any circuit that cannot meet all the conditions will be markedd as an invalid circuit.
 
 **Mark_Units():**
 
-- This is the recursive function that enters a circuit vector and marks every separation unit if needed.
+- This is a recursive function that enters a circuit vector and marks every separation unit if they are seen.
+
+**NOTE:** 
+- Full html auto-documentation, using doxygen, of the three cpp files can be found in the folders;
+- circuit_simulation_doc ---> _circuit__simulator_8cpp.html
+- Circuit_Validity_Doc ---> _c_circuit_8cpp.html
+- GA_documentation ---> html ---> _genetic_algorithm_8cpp.html
 
 ## **Output**
 ### **Main Output**
