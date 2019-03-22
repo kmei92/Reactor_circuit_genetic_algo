@@ -135,7 +135,7 @@ Timeline
 
 - Preparation of slides and presentation: Friday
 
-  # Contributors
+# Contributors
 
-  - [**Professor Stephen Neethling**](https://www.imperial.ac.uk/people/s.neethling)
-  - [**Platinum group**](https://github.com/msc-acse/acse-4-project-3-platinum)
+- [**Professor Stephen Neethling**](https://www.imperial.ac.uk/people/s.neethling)
+- [**Platinum group**](https://github.com/msc-acse/acse-4-project-3-platinum)
