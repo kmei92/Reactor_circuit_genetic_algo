@@ -90,50 +90,13 @@ Ensure that the project contains the above linkage before compiling and running.
 - This is the recursive function that enters a circuit vector and marks every separation unit if needed.
 
 ## **Output**
+- Circuit Configuration with 5 units and iteration steps of 10000.
+![unit_5](https://user-images.githubusercontent.com/43985789/54815379-bf95b200-4c89-11e9-8623-708931be99c1.PNG)
+- Circuit Configuration with 10 units and iteration steps of 10000.
+![unit_10](https://user-images.githubusercontent.com/43985789/54815376-befd1b80-4c89-11e9-81d8-c03e859f7007.PNG)
+- Circuit Configuration with 15 units and iteration steps of 10000.
+![Unit_15](https://user-images.githubusercontent.com/43985789/54815377-befd1b80-4c89-11e9-94c6-d3bb9268ebe2.PNG)
 
-## **Roadmap**
-
-Group members divided into two groups 
-
-- Group Genetic Algorithm: Sanaz, keer and Ming
-
-- Group Circuit Simulation: Yusuf, Sean and Michael
-
-
-Daily schedule:
-
-- 9am resumption
-
-- 12:30pm – 2pm lunch
-
-
-Timeline
-
-- Genetic Algorithm code: Monday 
-
-- Circuit simulation code: Tuesday 
-
-- Validity checking function: Tuesday
-
-- Travis Testing functions: Wednesday
-
-- Measuring rate of convergence of original code? Wednesday
-
-- Investigate how probability of crossing selected parents (0.8 – 1) affects rate of convergence. Wednesday
-
-- Investigate how rate at which mutations are introduced (<1% probability) affect rate of convergence. Thursday
-
-- Parallelisation using OpenMP: Thursday
-
-- Rate of convergence affected by the number of child vectors used. Thursday
-
-- Rate of convergence affected by mutation rate. Thursday
-
-- Code documentation and auto-documentation: Thursday
-
-- Preparation of report and github readme file: Thursday
-
-- Preparation of slides and presentation: Friday
 
 # Contributors
 
