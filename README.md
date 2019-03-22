@@ -4,7 +4,7 @@ Applied Computational Science and Engineering (ACSE-4): Group Project 3
 ## **Synopsis**
 This project simulates the genetic algorithms with both serial and parallel programming, and achieves the optimal mineral recovery.
 
-The key parts from the simulation program are:
+The key parts of the simulation program are:
 
 - The Genetic Algorithm (including a defined fitness number calculation method)
 - Circuit Simulation (able to caculate the mass balance over all the units)
